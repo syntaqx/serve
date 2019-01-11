@@ -24,7 +24,7 @@ archive:
     - goos: windows
       format: zip
   replacements:
-    darwin: macOS
+    darwin: MacOS
     linux: Linux
     windows: Windows
     386: i386
