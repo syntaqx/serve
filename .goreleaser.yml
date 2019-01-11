@@ -1,6 +1,5 @@
 builds:
--
-  main: main.go
+- main: main.go
   binary: serve
   goos:
     - windows
