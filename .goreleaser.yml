@@ -1,0 +1,41 @@
+builds:
+-
+  main: main.go
+  binary: serve
+  goos:
+    - windows
+    - darwin
+    - linux
+  goarch:
+    - 386
+    - amd64
+    - arm
+    - arm64
+  ignore:
+    - goos: darwin
+      goarch: 386
+  env:
+   - CGO_ENABLED=0
+  ldflags:
+    - -s -w
+archive:
+  format: tar.gz
+  format_overrides:
+    - goos: windows
+      format: zip
+  replacements:
+    darwin: macOS
+    linux: Linux
+    windows: Windows
+    386: i386
+    amd64: x86_64
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - '^docs:'
+      - '^test:'
+      - Merge pull request
+      - Merge branch
+release:
+  draft: true

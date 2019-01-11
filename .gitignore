@@ -1,0 +1,29 @@
+# gitignore - Specifies intentionally untracked files and folders to ignore.
+# https://git-scm.com/docs/gitignore
+
+# Binaries for programs and plugins
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test binary, build with `go test -c`
+*.test
+
+# SQLite Databases
+*.db
+
+# Log files
+*.log
+
+# Output of the go coverage tool, specifically when used with LiteIDE
+coverage*
+*.out
+
+# Dependency directories
+vendor/
+_vendor-*/
+
+# Build artifacts
+bin/
+dist/
