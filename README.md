@@ -33,8 +33,8 @@ for your operating system and architecture.
 
 ### Manually build from source
 
-To manually build from source, check out the [development][#development]
-section.
+To manually build from source, check out instructions on getting started with
+[development](#development).
 
 ## Usage
 
