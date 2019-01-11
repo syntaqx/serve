@@ -31,4 +31,4 @@ serve /var/www
 
 [MIT]: https://opensource.org/licenses/MIT
 
-serve is open source software released under the [MIT license][MIT].
+`serve` is open source software released under the [MIT license][MIT].
