@@ -1,0 +1,24 @@
+codecov:
+  bot: codecov-io
+  notify:
+    require_ci_to_pass: yes
+
+coverage:
+  range: 70...100
+  round: down
+  precision: 2
+
+  status:
+    project: yes
+    patch: yes
+    changes: no
+
+comment:
+  layout: header, changes, diff, sunburst
+  behavior: default
+  require_changes: no
+
+ignore:
+  - "vendor/*"
+  - "third_party/*"
+  - "*.pb.go"
