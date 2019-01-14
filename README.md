@@ -13,6 +13,8 @@
 
 `serve` runs a static http server.
 
+> TL;DR: `python -m SimpleHTTPServer 8080` because I forget all the bits.
+
 ## Installation
 
 `serve` can be installed in a handeful of ways:
