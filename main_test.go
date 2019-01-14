@@ -56,7 +56,10 @@ func TestNoCache(t *testing.T) {
 	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
 	NoCache()(testHandler).ServeHTTP(res, req)
 
-	assert.Contains(res.Header().Get("Cache-Control"), "no-cache")
-	assert.Equal("no-cache", res.Header().Get("Pragma"))
-	assert.Equal("0", res.Header().Get("Expires"))
+	headers := res.Header()
+
+	assert.Equal(headers.Get("Expires"), "0")
+	assert.Equal(headers.Get("Pragma"), "no-cache")
+	assert.Equal(headers.Get("X-Accel-Expires"), "0")
+	assert.Contains(headers.Get("Cache-Control"), "no-cache")
 }
