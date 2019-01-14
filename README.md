@@ -13,7 +13,8 @@
 
 `serve` runs a static http server.
 
-> TL;DR: `python -m SimpleHTTPServer 8080` because I forget all the bits.
+> TL;DR: `python -m SimpleHTTPServer 8080` because who can remember that many
+> letters?
 
 ## Installation
 
