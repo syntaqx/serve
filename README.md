@@ -1,4 +1,8 @@
-# serve
+<div align="center">
+
+![img](assets/logo.png)
+
+`serve` is a static http server anywhere you need one.
 
 [homebrew]: https://brew.sh/
 [git]:      https://git-scm.com/
@@ -11,7 +15,9 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/syntaqx/protokit)](https://goreportcard.com/report/github.com/syntaqx/protokit)
 [![GoDoc](https://godoc.org/github.com/syntaqx/serve?status.svg)](https://godoc.org/github.com/syntaqx/serve)
 
-`serve` runs a static http server.
+<br><br>
+
+</div>
 
 > TL;DR: `python -m SimpleHTTPServer 8080` because who can remember that many
 > letters?
