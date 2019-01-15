@@ -55,10 +55,6 @@ func main() {
 		}
 	}
 
-	startHTTPServer(opt, log)
-}
-
-func startHTTPServer(opt flags, log *log.Logger) {
 	r := http.NewServeMux()
 
 	// Handler, wrapped with middleware
