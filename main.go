@@ -66,15 +66,7 @@ func VersionCommand(w io.Writer) {
 
 // ServerCommand implements the static http server command.
 func ServerCommand(log *log.Logger, opt flags) {
-	r := http.NewServeMux()
-
-	// Handler, wrapped with middleware
-	handler := http.FileServer(http.Dir(opt.Dir))
-	handler = Logger(log)(handler)
-	handler = CORS()(handler)
-	handler = NoCache()(handler)
-
-	r.Handle("/", handler)
+	r := NewRouter(log, opt)
 
 	server := &http.Server{
 		Addr:         net.JoinHostPort(opt.Host, strconv.Itoa(opt.Port)),
@@ -87,4 +79,19 @@ func ServerCommand(log *log.Logger, opt flags) {
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("http server closed unexpectedly: %v", err)
 	}
+}
+
+// NewRouter returns a new http.Handler for routing
+func NewRouter(log *log.Logger, opt flags) http.Handler {
+	r := http.NewServeMux()
+
+	// Handler, wrapped with middleware
+	handler := http.FileServer(http.Dir(opt.Dir))
+	handler = Logger(log)(handler)
+	handler = CORS()(handler)
+	handler = NoCache()(handler)
+
+	r.Handle("/", handler)
+
+	return r
 }
