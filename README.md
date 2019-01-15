@@ -8,6 +8,7 @@
 [git]:      https://git-scm.com/
 [golang]:   https://golang.org/
 [releases]: https://github.com/syntaqx/serve/releases
+[modules]:  https://github.com/golang/go/wiki/Modules
 
 [![Release](https://img.shields.io/github/release/syntaqx/serve.svg)][releases]
 [![Build Status](https://travis-ci.org/syntaqx/serve.svg?branch=master)](https://travis-ci.org/syntaqx/serve)
@@ -40,9 +41,9 @@ brew install syntaqx/tap/serve
 You can visit [github releases][releases] to download the latest binary release
 for your operating system and architecture.
 
-### Manually build from source
+### From source
 
-To manually build from source, check out instructions on getting started with
+To build from source, check out the instructions on getting started with
 [development](#development).
 
 ## Usage
@@ -69,8 +70,8 @@ sure you have the following installed:
 - [Git][git]
 - [Go 1.11][golang]+
 
-Additionally, you will need to set `GO111MODULES=on` when interacting with the
-project.
+You will need to activate [Modules][modules] for your version of Go, generally
+by invoking `go` with the support `GO111MODULE=on` environment variable set.
 
 ### Install
 
@@ -78,14 +79,15 @@ You can download and install the project from GitHub by simply running:
 
 ```sh
 git clone git@github.com:syntaqx/serve.git && cd $(basename $_ .git)
-go install ./...
+make install
 ```
 
-This will install `serve` into your `$GOPATH/bin` directory, which if appended
-to your `$PATH`, can now be used.
+This will install the `serve` command into your `$GOPATH/bin` directory, which
+if properly appended to your `$PATH`, can now be used.
 
 ```sh
-serve version
+$ serve version
+serve version v0.0.6-8-g5074d63 windows/amd64
 ```
 
 ## Using `serve` manually
