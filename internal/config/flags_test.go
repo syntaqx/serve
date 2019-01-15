@@ -36,7 +36,6 @@ func TestSanitizeDir(t *testing.T) {
 }
 
 func TestSanitizeDirCwdErr(t *testing.T) {
-	t.Parallel()
 	assert := assert.New(t)
 
 	getwd = func() (string, error) {
@@ -46,4 +45,6 @@ func TestSanitizeDirCwdErr(t *testing.T) {
 	dir, err := SanitizeDir()
 	assert.Empty(dir)
 	assert.Error(err)
+
+	getwd = os.Getwd
 }
