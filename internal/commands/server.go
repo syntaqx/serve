@@ -14,7 +14,9 @@ import (
 
 // Server implements the static http server command.
 func Server(log *log.Logger, opt config.Flags, dir string) error {
-	fs := serve.NewFileServer(dir)
+	fs := serve.NewFileServer(serve.Options{
+		Directory: dir,
+	})
 
 	fs.Use(
 		middleware.Logger(log),

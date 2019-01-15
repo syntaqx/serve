@@ -106,7 +106,7 @@ import (
 )
 
 func main() {
-	fs := serve.NewFileServer(".")
+	fs := serve.NewFileServer()
 	log.Fatal(http.ListenAndServe(":8080", fs))
 }
 ```

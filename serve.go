@@ -3,15 +3,28 @@ package serve
 
 import "net/http"
 
+// Options is a struct for specifying configuration options for a FileServer.
+type Options struct {
+	Directory string
+}
+
 // FileServer wraps an http.FileServer.
 type FileServer struct {
+	opt     Options
 	Handler http.Handler
 }
 
 // NewFileServer initializes a FileServer.
-func NewFileServer(dir string) *FileServer {
+func NewFileServer(options ...Options) *FileServer {
+	var opt Options
+	if len(options) == 0 {
+		opt = Options{}
+	} else {
+		opt = options[0]
+	}
+
 	fs := &FileServer{
-		Handler: http.FileServer(http.Dir(dir)),
+		opt: opt,
 	}
 
 	return fs

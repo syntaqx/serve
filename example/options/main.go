@@ -8,6 +8,8 @@ import (
 )
 
 func main() {
-	fs := serve.NewFileServer()
+	fs := serve.NewFileServer(serve.Options{
+		Directory: ".",
+	})
 	log.Fatal(http.ListenAndServe(":8080", fs))
 }
