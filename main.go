@@ -49,6 +49,7 @@ func main() {
 		}
 	}
 
+	// Execute the specified command
 	switch cmd {
 	case "version":
 		VersionCommand()
