@@ -25,16 +25,13 @@ func main() {
 
 	log := log.New(os.Stderr, "[serve] ", log.LstdFlags)
 
-	// If an argument was provided, see if it's a command, or use it as opt.Dir
-	cmd := flag.Arg(0)
-	opt.Dir = sanitizeDirFlagArg(opt.Dir, cmd)
-
 	// Execute the specified command
 	var err error
-	switch cmd {
+	switch cmd := flag.Arg(0); cmd {
 	case "version":
 		err = VersionCommand(os.Stderr)
 	default:
+		opt.Dir = sanitizeDirFlagArg(opt.Dir, cmd)
 		err = ServerCommand(log, opt)
 	}
 
