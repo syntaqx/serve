@@ -10,8 +10,6 @@ import (
 )
 
 func TestVersionCommand(t *testing.T) {
-	t.Parallel()
-
 	assert := assert.New(t)
 
 	var b bytes.Buffer
@@ -21,8 +19,6 @@ func TestVersionCommand(t *testing.T) {
 }
 
 func TestServerCommand(t *testing.T) {
-	t.Parallel()
-
 	var b bytes.Buffer
 	log := log.New(&b, "[test] ", 0)
 	opt := flags{Port: 0}
