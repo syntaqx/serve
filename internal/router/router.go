@@ -17,6 +17,7 @@ func NewRouter(log *log.Logger, opt config.Flags) http.Handler {
 	handler = middleware.Logger(log)(handler)
 	handler = middleware.CORS()(handler)
 	handler = middleware.NoCache()(handler)
+	handler = middleware.Recover()(handler)
 
 	r.Handle("/", handler)
 
