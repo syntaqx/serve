@@ -31,7 +31,7 @@
 If you are using [Homebrew][] on macOS, you can install `serve` with the
 following command:
 
-```
+```sh
 brew install syntaqx/tap/serve
 ```
 
@@ -49,14 +49,14 @@ To manually build from source, check out instructions on getting started with
 
 Run a server from the current directory:
 
-```
+```sh
 serve
 ```
 
 Or, specify the directory. Paths can be both relative and absolute:
 
-```
-serve /var/www
+```sh
+serve /var/www # or serve -dir=/var/www
 ```
 
 ## Development
@@ -76,7 +76,7 @@ project.
 
 You can download and install the project from GitHub by simply running:
 
-```
+```sh
 git clone git@github.com:syntaqx/serve.git && cd $(basename $_ .git)
 go install ./...
 ```
@@ -84,7 +84,7 @@ go install ./...
 This will install `serve` into your `$GOPATH/bin` directory, which if appended
 to your `$PATH`, can now be used.
 
-```
+```sh
 serve version
 ```
 
