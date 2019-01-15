@@ -1,3 +1,5 @@
+// Package main implements the runtime for the serve binary.
+// `serve` is a static http server anywhere you need one.
 package main
 
 import (
