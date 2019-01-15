@@ -78,7 +78,7 @@ You can download and install the project from GitHub by simply running:
 
 ```
 git clone git@github.com:syntaqx/serve.git && cd $(basename $_ .git)
-go install .
+go install ./...
 ```
 
 This will install `serve` into your `$GOPATH/bin` directory, which should be
