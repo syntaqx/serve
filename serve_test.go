@@ -8,6 +8,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestFileServerDefaults(t *testing.T) {
+	fs := NewFileServer()
+	_ = fs
+}
+
 func TestFileServerOptions(t *testing.T) {
 	fs := NewFileServer(Options{Directory: "test"})
 	_ = fs
