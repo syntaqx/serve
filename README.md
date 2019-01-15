@@ -48,7 +48,7 @@ curl -sfL https://install.goreleaser.com/github.com/syntaqx/serve.sh | sh
 ```
 
 Or manually download the [latest release][releases] binary for your system and
-architecture and install them it into your `$PATH`.
+architecture and install it into your `$PATH`.
 
 ### From source
 
