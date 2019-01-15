@@ -5,6 +5,7 @@ import (
 	"net/http"
 )
 
+// Recover is a middleware that recovers from panics that occur for a request.
 func Recover() func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
 		fn := func(w http.ResponseWriter, r *http.Request) {
