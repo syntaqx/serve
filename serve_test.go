@@ -35,9 +35,7 @@ func TestFileServerUse(t *testing.T) {
 	fs.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		t.Fail()
 	})
-
-	fs.Use(testMiddleware2)
-	fs.Use(testMiddleware1)
+	fs.Use(testMiddleware2, testMiddleware1)
 
 	fs.ServeHTTP(res, req)
 

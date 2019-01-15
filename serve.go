@@ -17,7 +17,7 @@ func NewFileServer(dir string) *FileServer {
 	return fs
 }
 
-// Use wraps the handler with another, middleware style.
+// Use wraps the Handler with middleware(s).
 func (fs *FileServer) Use(mws ...func(http.Handler) http.Handler) {
 	for _, h := range mws {
 		fs.Handler = h(fs.Handler)
