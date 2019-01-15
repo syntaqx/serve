@@ -37,6 +37,27 @@ func TestServerCommand(t *testing.T) {
 	time.Sleep(200 * time.Millisecond)
 }
 
+func TestServerCommandErr(t *testing.T) {
+	t.Parallel()
+	assert := assert.New(t)
+
+	var b bytes.Buffer
+	log := log.New(&b, "[test] ", 8888)
+	opt := flags{Port: 8888}
+
+	go func() {
+		_ = http.ListenAndServe(":8888", nil)
+	}()
+
+	time.Sleep(200 * time.Millisecond)
+
+	go func() {
+		assert.Error(ServerCommand(log, opt))
+	}()
+
+	time.Sleep(200 * time.Millisecond)
+}
+
 func TestNewRouter(t *testing.T) {
 	t.Parallel()
 
