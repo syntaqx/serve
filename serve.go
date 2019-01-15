@@ -11,7 +11,7 @@ type Options struct {
 // FileServer wraps an http.FileServer.
 type FileServer struct {
 	opt     Options
-	Handler http.Handler
+	handler http.Handler
 }
 
 // NewFileServer initializes a FileServer.
@@ -27,17 +27,18 @@ func NewFileServer(options ...Options) *FileServer {
 		opt: opt,
 	}
 
+	fs.handler = http.FileServer(http.Dir(opt.Directory))
 	return fs
 }
 
 // Use wraps the Handler with middleware(s).
 func (fs *FileServer) Use(mws ...func(http.Handler) http.Handler) {
 	for _, h := range mws {
-		fs.Handler = h(fs.Handler)
+		fs.handler = h(fs.handler)
 	}
 }
 
 // ServeHTTP implements the net/http.Handler interface.
 func (fs *FileServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-	fs.Handler.ServeHTTP(w, r)
+	fs.handler.ServeHTTP(w, r)
 }

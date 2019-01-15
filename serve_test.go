@@ -31,10 +31,11 @@ func TestFileServerUse(t *testing.T) {
 		return http.HandlerFunc(fn)
 	}
 
-	fs := NewFileServer()
-	fs.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		t.Fail()
-	})
+	fs := &FileServer{
+		handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			t.Fail()
+		}),
+	}
 
 	fs.Use(testMiddleware2, testMiddleware1)
 
@@ -51,10 +52,12 @@ func TestFileServerServeHTTP(t *testing.T) {
 	assert.NoError(err)
 	res := httptest.NewRecorder()
 
-	fs := NewFileServer()
-	fs.Handler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		_, _ = w.Write([]byte("expected"))
-	})
+	fs := &FileServer{
+		handler: http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			_, _ = w.Write([]byte("expected"))
+		}),
+	}
+
 	fs.ServeHTTP(res, req)
 
 	assert.Equal("expected", res.Body.String())
