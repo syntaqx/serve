@@ -15,9 +15,9 @@ func NewRouter(log *log.Logger, opt config.Flags) http.Handler {
 	// Handler, wrapped with middleware
 	handler := http.FileServer(http.Dir(opt.Dir))
 	handler = middleware.Logger(log)(handler)
+	handler = middleware.Recover()(handler)
 	handler = middleware.CORS()(handler)
 	handler = middleware.NoCache()(handler)
-	handler = middleware.Recover()(handler)
 
 	r.Handle("/", handler)
 
