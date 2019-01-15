@@ -14,7 +14,9 @@ builds:
     - goos: darwin
       goarch: 386
   env:
-   - CGO_ENABLED=0
+    - CGO_ENABLED=0
+  ldflags:
+    - -s -w -X main.version={{.Version}}
 archive:
   format: tar.gz
   format_overrides:
