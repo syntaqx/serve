@@ -21,6 +21,8 @@ func TestVersionCommand(t *testing.T) {
 }
 
 func TestServerCommand(t *testing.T) {
+	t.Skip()
+
 	t.Parallel()
 	assert := assert.New(t)
 
