@@ -8,6 +8,11 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestFileServerOptions(t *testing.T) {
+	fs := NewFileServer(Options{Directory: "test"})
+	_ = fs
+}
+
 func TestFileServerUse(t *testing.T) {
 	t.Parallel()
 	assert := assert.New(t)
