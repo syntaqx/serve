@@ -34,24 +34,10 @@ func main() {
 
 	// If an argument was provided, see if it's a command, or use it as opt.Dir
 	cmd := flag.Arg(0)
-
-	// If an argument is provided, use it as the root directory.
-	if opt.Dir == "" {
-		if len(cmd) == 0 {
-			cwd, err := os.Getwd()
-			if err != nil {
-				log.Printf("unable to determine current working directory: %v\n", err)
-				os.Exit(1)
-			}
-			opt.Dir = cwd
-		} else {
-			opt.Dir = cmd
-		}
-	}
-
-	var err error
+	opt.Dir = sanitizeDirFlagArg(opt.Dir, cmd)
 
 	// Execute the specified command
+	var err error
 	switch cmd {
 	case "version":
 		err = VersionCommand(os.Stderr)
@@ -63,6 +49,24 @@ func main() {
 		log.Printf("cmd error: %v", err)
 		os.Exit(1)
 	}
+}
+
+func sanitizeDirFlagArg(opt, cmd string) string {
+	if opt != "" {
+		return opt
+	}
+
+	if len(cmd) != 0 {
+		return cmd
+	}
+
+	cwd, err := os.Getwd()
+	if err != nil {
+		log.Printf("unable to determine current working directory: %v\n", err)
+		os.Exit(1)
+	}
+
+	return cwd
 }
 
 // VersionCommand implements the command `version` which outputs the current
