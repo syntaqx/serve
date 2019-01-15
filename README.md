@@ -82,8 +82,8 @@ git clone git@github.com:syntaqx/serve.git && cd $(basename $_ .git)
 make install
 ```
 
-This will install the `serve` command into your `$GOPATH/bin` directory, which
-if properly appended to your `$PATH`, can now be used.
+This will install `serve` into your `$GOPATH/bin` directory, which assuming is
+properly appended to your `$PATH`, can now be used:
 
 ```sh
 $ serve version
