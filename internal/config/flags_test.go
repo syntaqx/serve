@@ -16,20 +16,19 @@ func TestSanitizeDir(t *testing.T) {
 	assert.NoError(err)
 
 	var tests = []struct {
-		opt      string
-		cmd      string
+		dirs     []string
 		expected string
 	}{
-		{"foo", "bar", "foo"},
-		{"", "bar", "bar"},
-		{"", "", cwd},
+		{[]string{"foo", "bar"}, "foo"},
+		{[]string{"", "bar"}, "bar"},
+		{[]string{"", ""}, cwd},
 	}
 
 	for _, tt := range tests {
 		tt := tt
 		t.Run("", func(t *testing.T) {
 			t.Parallel()
-			dir, err := SanitizeDir(tt.opt, tt.cmd)
+			dir, err := SanitizeDir(tt.dirs...)
 			assert.Equal(tt.expected, dir)
 			assert.NoError(err)
 		})
@@ -44,7 +43,7 @@ func TestSanitizeDirCwdErr(t *testing.T) {
 		return "", errors.New("mock")
 	}
 
-	dir, err := SanitizeDir("", "")
+	dir, err := SanitizeDir()
 	assert.Empty(dir)
 	assert.Error(err)
 }

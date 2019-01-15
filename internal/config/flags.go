@@ -14,11 +14,14 @@ type Flags struct {
 	Dir  string
 }
 
-func SanitizeDir(optval, cmdval string) (string, error) {
-	if len(optval) != 0 {
-		return optval, nil
-	} else if len(cmdval) != 0 {
-		return cmdval, nil
+// SanitizeDir allows a directory source to be set from multiple values. If any
+// value is defined, that value is used. If none are defined, the current
+// working directory is retrieved.
+func SanitizeDir(dirs ...string) (string, error) {
+	for _, dir := range dirs {
+		if len(dir) > 0 {
+			return dir, nil
+		}
 	}
 
 	cwd, err := getwd()
