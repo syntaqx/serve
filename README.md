@@ -12,7 +12,7 @@
 [![Release](https://img.shields.io/github/release/syntaqx/serve.svg)][releases]
 [![Build Status](https://travis-ci.org/syntaqx/serve.svg?branch=master)](https://travis-ci.org/syntaqx/serve)
 [![codecov](https://codecov.io/gh/syntaqx/serve/branch/master/graph/badge.svg)](https://codecov.io/gh/syntaqx/serve)
-[![Go Report Card](https://goreportcard.com/badge/github.com/syntaqx/protokit)](https://goreportcard.com/report/github.com/syntaqx/protokit)
+[![Go Report Card](https://goreportcard.com/badge/github.com/syntaqx/serve)](https://goreportcard.com/report/github.com/syntaqx/serve)
 [![GoDoc](https://godoc.org/github.com/syntaqx/serve?status.svg)](https://godoc.org/github.com/syntaqx/serve)
 
 <br><br>
