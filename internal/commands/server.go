@@ -14,8 +14,8 @@ import (
 )
 
 // Server implements the static http server command.
-func Server(log *log.Logger, opt config.Flags) error {
-	fs := serve.NewFileServer(opt.Dir)
+func Server(log *log.Logger, opt config.Flags, dir string) error {
+	fs := serve.NewFileServer(dir)
 
 	fs.Use(middleware.Logger(log))
 	fs.Use(middleware.Recover())

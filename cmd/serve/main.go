@@ -21,33 +21,23 @@ func main() {
 
 	log := log.New(os.Stderr, "[serve] ", log.LstdFlags)
 
-	var err error
-	switch cmd := flag.Arg(0); cmd {
+	cmd := flag.Arg(0)
+
+	dir, err := config.SanitizeDir(opt.Dir, cmd)
+	if err != nil {
+		log.Printf("sanitize dir: %v", err)
+		os.Exit(1)
+	}
+
+	switch cmd {
 	case "version":
 		err = commands.Version(version, os.Stderr)
 	default:
-		opt.Dir = sanitizeDirFlagArg(opt.Dir, cmd)
-		err = commands.Server(log, opt)
+		err = commands.Server(log, opt, dir)
 	}
 
 	if err != nil {
-		log.Printf("cmd error: %v", err)
+		log.Printf("cmd: %v", err)
 		os.Exit(1)
 	}
-}
-
-func sanitizeDirFlagArg(opt, cmd string) string {
-	if opt != "" {
-		return opt
-	} else if len(cmd) != 0 {
-		return cmd
-	}
-
-	cwd, err := os.Getwd()
-	if err != nil {
-		log.Printf("unable to determine current working directory: %v\n", err)
-		os.Exit(1)
-	}
-
-	return cwd
 }
