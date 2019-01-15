@@ -17,7 +17,7 @@ func TestVersionCommand(t *testing.T) {
 	var b bytes.Buffer
 	VersionCommand(&b)
 
-	assert.Contains(fmt.Sprintf("version %s", version), b.String())
+	assert.Contains(b.String(), fmt.Sprintf("version %s", version))
 }
 
 func TestServerCommand(t *testing.T) {

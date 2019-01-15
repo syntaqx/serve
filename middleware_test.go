@@ -39,7 +39,7 @@ func TestCORS(t *testing.T) {
 	CORS()(testHandler).ServeHTTP(res, req)
 
 	assert.Equal("*", res.Header().Get("Access-Control-ALlow-Origin"))
-	assert.Contains(res.Header().Get("Access-Control-ALlow-Methods"), http.MethodGet)
+	assert.Contains(res.Header().Get("Access-Control-Allow-Methods"), http.MethodGet)
 }
 
 func TestNoCache(t *testing.T) {
@@ -55,8 +55,8 @@ func TestNoCache(t *testing.T) {
 
 	headers := res.Header()
 
-	assert.Equal(headers.Get("Expires"), "0")
-	assert.Equal(headers.Get("Pragma"), "no-cache")
-	assert.Equal(headers.Get("X-Accel-Expires"), "0")
+	assert.Equal("0", headers.Get("Expires"))
+	assert.Equal("no-cache", headers.Get("Pragma"))
+	assert.Equal("0", headers.Get("X-Accel-Expires"))
 	assert.Contains(headers.Get("Cache-Control"), "no-cache")
 }
