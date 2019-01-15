@@ -11,6 +11,24 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestVersionCommand(t *testing.T) {
+	t.Parallel()
+
+	// @TODO - What do we even do here?
+	VersionCommand()
+}
+
+func TestServerCommand(t *testing.T) {
+	t.Parallel()
+
+	var b bytes.Buffer
+	log := log.New(&b, "[test] ", 0)
+	opt := flags{Port: 0}
+
+	// @TODO - What do we even do here?
+	go ServerCommand(log, opt)
+}
+
 func TestLogger(t *testing.T) {
 	t.Parallel()
 
