@@ -8,17 +8,23 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/syntaqx/serve"
 	"github.com/syntaqx/serve/internal/config"
-	"github.com/syntaqx/serve/internal/router"
+	"github.com/syntaqx/serve/internal/middleware"
 )
 
 // Server implements the static http server command.
 func Server(log *log.Logger, opt config.Flags) error {
-	r := router.NewRouter(log, opt)
+	fs := serve.NewFileServer(opt.Dir)
+
+	fs.Use(middleware.Logger(log))
+	fs.Use(middleware.Recover())
+	fs.Use(middleware.CORS())
+	fs.Use(middleware.NoCache())
 
 	server := &http.Server{
 		Addr:         net.JoinHostPort(opt.Host, strconv.Itoa(opt.Port)),
-		Handler:      r,
+		Handler:      fs,
 		ReadTimeout:  15 * time.Second,
 		WriteTimeout: 15 * time.Second,
 	}

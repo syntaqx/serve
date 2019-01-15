@@ -88,6 +88,27 @@ to your `$PATH`, can now be used.
 serve version
 ```
 
+## Using `serve` manually
+
+Serve also exposes a reusable `FileServer` convenience struct, letting you
+easily create your own static file server:
+
+```go
+package main
+
+import (
+	"log"
+	"net/http"
+
+	"github.com/syntaqx/serve"
+)
+
+func main() {
+	fs := serve.NewFileServer(".")
+	log.Fatal(http.ListenAndServe(":8080", fs))
+}
+```
+
 ## License
 
 [MIT]: https://opensource.org/licenses/MIT

@@ -25,5 +25,5 @@ func TestRecover(t *testing.T) {
 	Recover()(testHandler).ServeHTTP(res, req)
 
 	assert.Equal(http.StatusInternalServerError, res.Code)
-	assert.Equal(strings.TrimSpace(res.Body.String()), "[PANIC RECOVERED] test")
+	assert.Equal("[PANIC RECOVERED] test", strings.TrimSpace(res.Body.String()))
 }
