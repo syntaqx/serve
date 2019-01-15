@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"bytes"
@@ -12,7 +12,7 @@ func TestNewRouter(t *testing.T) {
 
 	var b bytes.Buffer
 	log := log.New(&b, "[test] ", 0)
-	opt := flags{Port: 0}
+	opt := Flags{Port: 0}
 
 	r := NewRouter(log, opt)
 

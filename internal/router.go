@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 )
 
 // NewRouter returns a new http.Handler for routing
-func NewRouter(log *log.Logger, opt flags) http.Handler {
+func NewRouter(log *log.Logger, opt Flags) http.Handler {
 	r := http.NewServeMux()
 
 	// Handler, wrapped with middleware

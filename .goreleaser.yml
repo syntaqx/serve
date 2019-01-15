@@ -1,5 +1,5 @@
 builds:
-- main: cmd/serve/*.go
+- main: cmd/serve/main.go
   binary: serve
   goos:
     - windows

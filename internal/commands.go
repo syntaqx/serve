@@ -1,4 +1,4 @@
-package main
+package internal
 
 import (
 	"fmt"
@@ -13,13 +13,13 @@ import (
 
 // VersionCommand implements the command `version` which outputs the current
 // binary release version, if any.
-func VersionCommand(w io.Writer) error {
+func VersionCommand(version string, w io.Writer) error {
 	fmt.Fprintf(w, fmt.Sprintf("serve version %s %s/%s\n", version, runtime.GOOS, runtime.GOARCH))
 	return nil
 }
 
 // ServerCommand implements the static http server command.
-func ServerCommand(log *log.Logger, opt flags) error {
+func ServerCommand(log *log.Logger, opt Flags) error {
 	r := NewRouter(log, opt)
 
 	server := &http.Server{

@@ -5,18 +5,14 @@ import (
 	"flag"
 	"log"
 	"os"
+
+	"github.com/syntaqx/serve/internal"
 )
 
 var version = "0.0.0-develop"
 
-type flags struct {
-	Host string
-	Port int
-	Dir  string
-}
-
 func main() {
-	var opt flags
+	var opt internal.Flags
 	flag.StringVar(&opt.Host, "host", "", "host address to bind to")
 	flag.IntVar(&opt.Port, "port", 8080, "listening port")
 	flag.StringVar(&opt.Dir, "dir", "", "directory to serve")
@@ -27,10 +23,10 @@ func main() {
 	var err error
 	switch cmd := flag.Arg(0); cmd {
 	case "version":
-		err = VersionCommand(os.Stderr)
+		err = internal.VersionCommand(version, os.Stderr)
 	default:
 		opt.Dir = sanitizeDirFlagArg(opt.Dir, cmd)
-		err = ServerCommand(log, opt)
+		err = internal.ServerCommand(log, opt)
 	}
 
 	if err != nil {

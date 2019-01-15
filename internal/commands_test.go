@@ -1,8 +1,7 @@
-package main
+package internal
 
 import (
 	"bytes"
-	"fmt"
 	"log"
 	"net/http"
 	"testing"
@@ -16,10 +15,10 @@ func TestVersionCommand(t *testing.T) {
 	assert := assert.New(t)
 
 	var b bytes.Buffer
-	err := VersionCommand(&b)
+	err := VersionCommand("mock", &b)
 
 	assert.NoError(err)
-	assert.Contains(b.String(), fmt.Sprintf("version %s", version))
+	assert.Contains(b.String(), "version mock")
 }
 
 func TestServerCommand(t *testing.T) {
@@ -28,7 +27,7 @@ func TestServerCommand(t *testing.T) {
 
 	var b bytes.Buffer
 	log := log.New(&b, "[test] ", 0)
-	opt := flags{Port: 0}
+	opt := Flags{Port: 0}
 
 	go func() {
 		assert.NoError(ServerCommand(log, opt))
@@ -43,7 +42,7 @@ func TestServerCommandErr(t *testing.T) {
 
 	var b bytes.Buffer
 	log := log.New(&b, "[test] ", 8888)
-	opt := flags{Port: 8888}
+	opt := Flags{Port: 8888}
 
 	go func() {
 		_ = http.ListenAndServe(":8888", nil)
