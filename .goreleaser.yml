@@ -15,8 +15,6 @@ builds:
       goarch: 386
   env:
    - CGO_ENABLED=0
-  ldflags:
-    - -s -w
 archive:
   format: tar.gz
   format_overrides:
