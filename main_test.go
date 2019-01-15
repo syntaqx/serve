@@ -11,6 +11,23 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestStartHTTPServer(t *testing.T) {
+	t.Skip()
+
+	t.Parallel()
+
+	assert := assert.New(t)
+
+	opt := flags{Port: 0, Dir: "."}
+
+	var b bytes.Buffer
+	log := log.New(&b, "[test] ", 0)
+
+	go startHTTPServer(opt, log)
+
+	assert.Contains(b.String(), "http server listening at")
+}
+
 func TestLogger(t *testing.T) {
 	t.Parallel()
 
