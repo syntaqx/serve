@@ -49,12 +49,18 @@ func main() {
 		}
 	}
 
+	var err error
+
 	// Execute the specified command
 	switch cmd {
 	case "version":
-		VersionCommand(os.Stderr)
+		err = VersionCommand(os.Stderr)
 	default:
-		ServerCommand(log, opt)
+		err = ServerCommand(log, opt)
+	}
+
+	if err != nil {
+		os.Exit(1)
 	}
 }
 
