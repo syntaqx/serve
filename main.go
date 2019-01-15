@@ -37,7 +37,7 @@ func main() {
 
 	// Version command, mostly used for testing if the binary is working.
 	if arg == "version" {
-		fmt.Printf(fmt.Sprintf("serve version %s %s/%s", version, runtime.GOOS, runtime.GOARCH))
+		fmt.Printf(fmt.Sprintf("serve version %s %s/%s\n", version, runtime.GOOS, runtime.GOARCH))
 		os.Exit(0)
 	}
 
