@@ -21,8 +21,10 @@
 
 </div>
 
-> TL;DR: `python -m SimpleHTTPServer 8080` because who can remember that many
-> letters?
+## TL;DR
+
+> It's basically `python -m SimpleHTTPServer 8080` written in Go, because who
+> can remember that many letters?
 
 ## Installation
 
