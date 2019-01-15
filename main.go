@@ -56,14 +56,12 @@ func main() {
 	default:
 		ServerCommand(log, opt)
 	}
-
 }
 
 // VersionCommand implements the command `version` which outputs the current
 // binary release version, if any.
 func VersionCommand(w io.Writer) {
 	fmt.Fprintf(w, fmt.Sprintf("serve version %s %s/%s\n", version, runtime.GOOS, runtime.GOARCH))
-	os.Exit(0)
 }
 
 // ServerCommand implements the static http server command.

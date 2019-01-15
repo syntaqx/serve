@@ -19,6 +19,8 @@ func TestVersionCommand(t *testing.T) {
 }
 
 func TestServerCommand(t *testing.T) {
+	t.Skip()
+
 	var b bytes.Buffer
 	log := log.New(&b, "[test] ", 0)
 	opt := flags{Port: 0}
