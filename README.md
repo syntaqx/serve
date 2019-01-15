@@ -90,8 +90,8 @@ serve version
 
 ## Using `serve` manually
 
-Serve also exposes a reusable `FileServer` convenience struct, letting you
-easily create your own static file server:
+Serve also exposes a reusable `FileServer`, allowing you to easily embed the
+library into your codebase and create an awesome static file server:
 
 ```go
 package main
