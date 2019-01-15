@@ -39,10 +39,16 @@ following command:
 brew install syntaqx/tap/serve
 ```
 
-### Download the prebuilt binary
+### Download the binary
 
-You can visit [github releases][releases] to download the latest binary release
-for your operating system and architecture.
+Quickly download install the latest release:
+
+```sh
+curl -sfL https://install.goreleaser.com/github.com/syntaqx/serve.sh | sh
+```
+
+Or manually download the latest release for your system and architecture by
+visiting the github [releases][] page.
 
 ### From source
 
