@@ -5,7 +5,11 @@ import "net/http"
 
 // Options is a struct for specifying configuration options for a FileServer.
 type Options struct {
+	// Directory is the root directory from which to serve files.
 	Directory string
+
+	// Prefix is a filepath prefix that should be ignored by the FileServer.
+	Prefix string
 }
 
 // FileServer wraps an http.FileServer.
@@ -27,7 +31,7 @@ func NewFileServer(options ...Options) *FileServer {
 		opt: opt,
 	}
 
-	fs.handler = http.FileServer(http.Dir(opt.Directory))
+	fs.handler = http.StripPrefix(opt.Prefix, http.FileServer(http.Dir(opt.Directory)))
 	return fs
 }
 
