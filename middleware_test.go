@@ -12,6 +12,7 @@ import (
 )
 
 func TestLogger(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 
 	var b bytes.Buffer
@@ -27,6 +28,7 @@ func TestLogger(t *testing.T) {
 	assert.Equal("[test] GET /", strings.TrimSpace(b.String()))
 }
 func TestCORS(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 
 	req, err := http.NewRequest(http.MethodGet, "/", nil)
@@ -41,6 +43,7 @@ func TestCORS(t *testing.T) {
 }
 
 func TestNoCache(t *testing.T) {
+	t.Parallel()
 	assert := assert.New(t)
 
 	req, err := http.NewRequest(http.MethodGet, "/", nil)
