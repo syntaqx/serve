@@ -4,15 +4,8 @@ package main
 
 import (
 	"flag"
-	"fmt"
-	"io"
 	"log"
-	"net"
-	"net/http"
 	"os"
-	"runtime"
-	"strconv"
-	"time"
 )
 
 var version = "0.0.0-develop"
@@ -67,45 +60,4 @@ func sanitizeDirFlagArg(opt, cmd string) string {
 	}
 
 	return cwd
-}
-
-// VersionCommand implements the command `version` which outputs the current
-// binary release version, if any.
-func VersionCommand(w io.Writer) error {
-	fmt.Fprintf(w, fmt.Sprintf("serve version %s %s/%s\n", version, runtime.GOOS, runtime.GOARCH))
-	return nil
-}
-
-// ServerCommand implements the static http server command.
-func ServerCommand(log *log.Logger, opt flags) error {
-	r := NewRouter(log, opt)
-
-	server := &http.Server{
-		Addr:         net.JoinHostPort(opt.Host, strconv.Itoa(opt.Port)),
-		Handler:      r,
-		ReadTimeout:  15 * time.Second,
-		WriteTimeout: 15 * time.Second,
-	}
-
-	log.Printf("http server listening at %s", server.Addr)
-	if err := server.ListenAndServe(); err != nil {
-		return fmt.Errorf("http server closed unexpectedly: %v", err)
-	}
-
-	return nil
-}
-
-// NewRouter returns a new http.Handler for routing
-func NewRouter(log *log.Logger, opt flags) http.Handler {
-	r := http.NewServeMux()
-
-	// Handler, wrapped with middleware
-	handler := http.FileServer(http.Dir(opt.Dir))
-	handler = Logger(log)(handler)
-	handler = CORS()(handler)
-	handler = NoCache()(handler)
-
-	r.Handle("/", handler)
-
-	return r
 }
