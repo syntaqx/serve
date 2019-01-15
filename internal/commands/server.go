@@ -1,7 +1,6 @@
 package commands
 
 import (
-	"fmt"
 	"log"
 	"net"
 	"net/http"
@@ -17,10 +16,12 @@ import (
 func Server(log *log.Logger, opt config.Flags, dir string) error {
 	fs := serve.NewFileServer(dir)
 
-	fs.Use(middleware.Logger(log))
-	fs.Use(middleware.Recover())
-	fs.Use(middleware.CORS())
-	fs.Use(middleware.NoCache())
+	fs.Use(
+		middleware.Logger(log),
+		middleware.Recover(),
+		middleware.CORS(),
+		middleware.NoCache(),
+	)
 
 	server := &http.Server{
 		Addr:         net.JoinHostPort(opt.Host, strconv.Itoa(opt.Port)),
@@ -30,9 +31,5 @@ func Server(log *log.Logger, opt config.Flags, dir string) error {
 	}
 
 	log.Printf("http server listening at %s", server.Addr)
-	if err := server.ListenAndServe(); err != nil {
-		return fmt.Errorf("http server closed unexpectedly: %v", err)
-	}
-
-	return nil
+	return server.ListenAndServe()
 }

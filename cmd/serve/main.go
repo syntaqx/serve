@@ -37,7 +37,7 @@ func main() {
 	}
 
 	if err != nil {
-		log.Printf("cmd: %v", err)
+		log.Printf("cmd.%s: %v", cmd, err)
 		os.Exit(1)
 	}
 }

@@ -18,8 +18,10 @@ func NewFileServer(dir string) *FileServer {
 }
 
 // Use wraps the handler with another, middleware style.
-func (fs *FileServer) Use(h func(http.Handler) http.Handler) {
-	fs.Handler = h(fs.Handler)
+func (fs *FileServer) Use(mws ...func(http.Handler) http.Handler) {
+	for _, h := range mws {
+		fs.Handler = h(fs.Handler)
+	}
 }
 
 // ServeHTTP implements the net/http.Handler interface.
