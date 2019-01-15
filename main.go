@@ -15,7 +15,7 @@ import (
 	"time"
 )
 
-const version = "0.0.0-develop"
+var version = "0.0.0-develop"
 
 type flags struct {
 	Host string `json:"host"`
