@@ -3,7 +3,7 @@ package serve
 
 import "net/http"
 
-// FileServer implements the http.FileServer.
+// FileServer wraps an http.FileServer.
 type FileServer struct {
 	Handler http.Handler
 }
