@@ -20,7 +20,7 @@ func TestServer(t *testing.T) {
 	opt := config.Flags{Port: 0}
 
 	go func() {
-		assert.NoError(Server(log, opt))
+		assert.NoError(Server(log, opt, "."))
 	}()
 
 	time.Sleep(200 * time.Millisecond)
@@ -41,7 +41,7 @@ func TestServerErr(t *testing.T) {
 	time.Sleep(200 * time.Millisecond)
 
 	go func() {
-		assert.Error(Server(log, opt))
+		assert.Error(Server(log, opt, "."))
 	}()
 
 	time.Sleep(200 * time.Millisecond)
