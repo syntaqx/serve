@@ -4,14 +4,18 @@ package main
 
 import (
 	"flag"
+	"fmt"
 	"log"
 	"net"
 	"net/http"
 	"os"
+	"runtime"
 	"strconv"
 	"strings"
 	"time"
 )
+
+const version = "0.0.0-develop"
 
 type flags struct {
 	Host string `json:"host"`
@@ -35,6 +39,12 @@ func main() {
 			os.Exit(1)
 		}
 		dir = cwd
+	}
+
+	// Version command, mostly used for testing if the binary is working.
+	if dir == "version" {
+		fmt.Printf(fmt.Sprintf("serve version %s %s/%s", version, runtime.GOOS, runtime.GOARCH))
+		os.Exit(0)
 	}
 
 	r := http.NewServeMux()

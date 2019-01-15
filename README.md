@@ -32,7 +32,7 @@ If you are using [Homebrew][] on macOS, you can install `serve` with the
 following command:
 
 ```
-<coming soon>
+brew install syntaqx/tap/serve
 ```
 
 ### Download the prebuilt binary
