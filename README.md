@@ -47,8 +47,8 @@ Quickly download install the latest release:
 curl -sfL https://install.goreleaser.com/github.com/syntaqx/serve.sh | sh
 ```
 
-Or manually download the latest release for your system and architecture by
-visiting the github [releases][] page.
+Or manually download the [latest release][releases] binary for your system and
+architecture and install them it into your `$PATH`.
 
 ### From source
 
