@@ -92,8 +92,8 @@ serve version v0.0.6-8-g5074d63 windows/amd64
 
 ## Using `serve` manually
 
-Serve also exposes a reusable `FileServer`, allowing you to easily embed the
-library into your codebase and create an awesome static file server:
+Besides running `serve` using the provided binary, you can also embed a
+`serve.FileServer` into your own Go program:
 
 ```go
 package main
