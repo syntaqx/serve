@@ -10,9 +10,9 @@ import (
 var version = "0.0.0-develop"
 
 type flags struct {
-	Host string `json:"host"`
-	Port int    `json:"port"`
-	Dir  string `json:"dir"`
+	Host string
+	Port int
+	Dir  string
 }
 
 func main() {
@@ -24,7 +24,6 @@ func main() {
 
 	log := log.New(os.Stderr, "[serve] ", log.LstdFlags)
 
-	// Execute the specified command
 	var err error
 	switch cmd := flag.Arg(0); cmd {
 	case "version":
@@ -43,9 +42,7 @@ func main() {
 func sanitizeDirFlagArg(opt, cmd string) string {
 	if opt != "" {
 		return opt
-	}
-
-	if len(cmd) != 0 {
+	} else if len(cmd) != 0 {
 		return cmd
 	}
 
