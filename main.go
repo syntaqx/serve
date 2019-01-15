@@ -60,6 +60,7 @@ func main() {
 	}
 
 	if err != nil {
+		log.Printf("cmd error: %v", err)
 		os.Exit(1)
 	}
 }
@@ -84,8 +85,7 @@ func ServerCommand(log *log.Logger, opt flags) error {
 
 	log.Printf("http server listening at %s", server.Addr)
 	if err := server.ListenAndServe(); err != nil {
-		log.Fatalf("http server closed unexpectedly: %v", err)
-		return err
+		return fmt.Errorf("http server closed unexpectedly: %v", err)
 	}
 
 	return nil
