@@ -60,12 +60,13 @@ func main() {
 
 // VersionCommand implements the command `version` which outputs the current
 // binary release version, if any.
-func VersionCommand(w io.Writer) {
+func VersionCommand(w io.Writer) error {
 	fmt.Fprintf(w, fmt.Sprintf("serve version %s %s/%s\n", version, runtime.GOOS, runtime.GOARCH))
+	return nil
 }
 
 // ServerCommand implements the static http server command.
-func ServerCommand(log *log.Logger, opt flags) {
+func ServerCommand(log *log.Logger, opt flags) error {
 	r := NewRouter(log, opt)
 
 	server := &http.Server{
@@ -78,7 +79,10 @@ func ServerCommand(log *log.Logger, opt flags) {
 	log.Printf("http server listening at %s", server.Addr)
 	if err := server.ListenAndServe(); err != nil {
 		log.Fatalf("http server closed unexpectedly: %v", err)
+		return err
 	}
+
+	return nil
 }
 
 // NewRouter returns a new http.Handler for routing
