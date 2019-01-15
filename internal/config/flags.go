@@ -1,4 +1,4 @@
-package internal
+package config
 
 // Flags are the expose configuration flags available to the serve binary.
 type Flags struct {

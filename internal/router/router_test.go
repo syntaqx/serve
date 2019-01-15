@@ -1,10 +1,12 @@
-package internal
+package router
 
 import (
 	"bytes"
 	"log"
 	"net/http"
 	"testing"
+
+	"github.com/syntaqx/serve/internal/config"
 )
 
 func TestNewRouter(t *testing.T) {
@@ -12,7 +14,7 @@ func TestNewRouter(t *testing.T) {
 
 	var b bytes.Buffer
 	log := log.New(&b, "[test] ", 0)
-	opt := Flags{Port: 0}
+	opt := config.Flags{Port: 0}
 
 	r := NewRouter(log, opt)
 

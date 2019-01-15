@@ -6,13 +6,14 @@ import (
 	"log"
 	"os"
 
-	"github.com/syntaqx/serve/internal"
+	"github.com/syntaqx/serve/internal/commands"
+	"github.com/syntaqx/serve/internal/config"
 )
 
 var version = "0.0.0-develop"
 
 func main() {
-	var opt internal.Flags
+	var opt config.Flags
 	flag.StringVar(&opt.Host, "host", "", "host address to bind to")
 	flag.IntVar(&opt.Port, "port", 8080, "listening port")
 	flag.StringVar(&opt.Dir, "dir", "", "directory to serve")
@@ -23,10 +24,10 @@ func main() {
 	var err error
 	switch cmd := flag.Arg(0); cmd {
 	case "version":
-		err = internal.VersionCommand(version, os.Stderr)
+		err = commands.Version(version, os.Stderr)
 	default:
 		opt.Dir = sanitizeDirFlagArg(opt.Dir, cmd)
-		err = internal.ServerCommand(log, opt)
+		err = commands.Server(log, opt)
 	}
 
 	if err != nil {
