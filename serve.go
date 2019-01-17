@@ -21,9 +21,7 @@ type FileServer struct {
 // NewFileServer initializes a FileServer.
 func NewFileServer(options ...Options) *FileServer {
 	var opt Options
-	if len(options) == 0 {
-		opt = Options{}
-	} else {
+	if len(options) > 0 {
 		opt = options[0]
 	}
 
