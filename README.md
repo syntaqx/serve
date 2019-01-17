@@ -29,7 +29,7 @@
 
 ## Installation
 
-`serve` can be installed in a handeful of ways:
+`serve` can be installed in a handful of ways:
 
 ### Homebrew on macOS
 
