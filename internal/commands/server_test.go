@@ -24,10 +24,10 @@ func TestServer(t *testing.T) {
 	}()
 
 	time.Sleep(200 * time.Millisecond)
+	assert.Contains(b.String(), "http server listening at")
 }
 
 func TestServerErr(t *testing.T) {
-	t.Parallel()
 	assert := assert.New(t)
 
 	var b bytes.Buffer
@@ -49,14 +49,13 @@ func TestServerErr(t *testing.T) {
 
 func TestServerHTTPS(t *testing.T) {
 	t.Parallel()
-
 	assert := assert.New(t)
 
 	var b bytes.Buffer
-	log := log.New(&b, "[test] ", 8888)
+	log := log.New(&b, "[test] ", 0)
 
 	opt := config.Flags{
-		Port:      8888,
+		Port:      0,
 		EnableSSL: true,
 		CertFile:  "../../fixtures/cert.pem",
 		KeyFile:   "../../fixtures/key.pem",
@@ -67,4 +66,5 @@ func TestServerHTTPS(t *testing.T) {
 	}()
 
 	time.Sleep(200 * time.Millisecond)
+	assert.Contains(b.String(), "https server listening at")
 }
