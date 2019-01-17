@@ -18,6 +18,11 @@ func getMockHTTPServerFunc(shouldError bool) func(addr string, h http.Handler) H
 	}
 }
 
+func TestGetStdHTTPServer(t *testing.T) {
+	_, ok := GetStdHTTPServer("", http.DefaultServeMux).(*http.Server)
+	assert.True(t, ok)
+}
+
 func TestServer(t *testing.T) {
 	getHTTPServerFunc = getMockHTTPServerFunc(false)
 
