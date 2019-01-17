@@ -12,22 +12,15 @@ import (
 	"github.com/syntaqx/serve/mock"
 )
 
-func getMockHTTPServer(addr string, h http.Handler) HTTPServer {
-	return &mock.HTTPServer{}
-}
-
-func getMockErrHTTPServer(addr string, h http.Handler) HTTPServer {
-	return &mock.HTTPServer{ShouldError: true}
-}
-
-func TestGetStdHTTPServer(t *testing.T) {
-	_, ok := GetStdHTTPServer("", http.DefaultServeMux).(*http.Server)
-	assert.True(t, ok)
+func getMockHTTPServerFunc(shouldError bool) func(addr string, h http.Handler) HTTPServer {
+	return func(addr string, h http.Handler) HTTPServer {
+		return &mock.HTTPServer{ShouldError: shouldError}
+	}
 }
 
 func TestServer(t *testing.T) {
-	getHTTPServerFunc = getMockHTTPServer
-
+	t.Parallel()
+	getHTTPServerFunc = getMockHTTPServerFunc(false)
 	assert := assert.New(t)
 
 	var b bytes.Buffer
@@ -43,8 +36,8 @@ func TestServer(t *testing.T) {
 }
 
 func TestServerErr(t *testing.T) {
-	getHTTPServerFunc = getMockErrHTTPServer
-
+	t.Parallel()
+	getHTTPServerFunc = getMockHTTPServerFunc(true)
 	assert := assert.New(t)
 
 	var b bytes.Buffer
@@ -61,9 +54,8 @@ func TestServerErr(t *testing.T) {
 }
 
 func TestServerHTTPS(t *testing.T) {
-	getHTTPServerFunc = getMockHTTPServer
-
 	t.Parallel()
+	getHTTPServerFunc = getMockHTTPServerFunc(false)
 	assert := assert.New(t)
 
 	var b bytes.Buffer
