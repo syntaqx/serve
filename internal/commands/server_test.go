@@ -9,15 +9,30 @@ import (
 
 	"github.com/stretchr/testify/assert"
 	"github.com/syntaqx/serve/internal/config"
+	"github.com/syntaqx/serve/mock"
 )
 
+func getMockHTTPServer(addr string, h http.Handler) HTTPServer {
+	return &mock.HTTPServer{}
+}
+
+func getMockErrHTTPServer(addr string, h http.Handler) HTTPServer {
+	return &mock.HTTPServer{ShouldError: true}
+}
+
+func TestGetStdHTTPServer(t *testing.T) {
+	_, ok := GetStdHTTPServer("", http.DefaultServeMux).(*http.Server)
+	assert.True(t, ok)
+}
+
 func TestServer(t *testing.T) {
-	t.Parallel()
+	getHTTPServerFunc = getMockHTTPServer
+
 	assert := assert.New(t)
 
 	var b bytes.Buffer
 	log := log.New(&b, "[test] ", 0)
-	opt := config.Flags{Port: 0}
+	opt := config.Flags{}
 
 	go func() {
 		assert.NoError(Server(log, opt, "."))
@@ -28,15 +43,13 @@ func TestServer(t *testing.T) {
 }
 
 func TestServerErr(t *testing.T) {
+	getHTTPServerFunc = getMockErrHTTPServer
+
 	assert := assert.New(t)
 
 	var b bytes.Buffer
-	log := log.New(&b, "[test] ", 8888)
-	opt := config.Flags{Port: 8888}
-
-	go func() {
-		_ = http.ListenAndServe(":8888", nil)
-	}()
+	log := log.New(&b, "[test] ", 0)
+	opt := config.Flags{}
 
 	time.Sleep(200 * time.Millisecond)
 
@@ -48,6 +61,8 @@ func TestServerErr(t *testing.T) {
 }
 
 func TestServerHTTPS(t *testing.T) {
+	getHTTPServerFunc = getMockHTTPServer
+
 	t.Parallel()
 	assert := assert.New(t)
 
@@ -55,7 +70,6 @@ func TestServerHTTPS(t *testing.T) {
 	log := log.New(&b, "[test] ", 0)
 
 	opt := config.Flags{
-		Port:      0,
 		EnableSSL: true,
 		CertFile:  "../../fixtures/cert.pem",
 		KeyFile:   "../../fixtures/key.pem",

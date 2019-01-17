@@ -12,6 +12,24 @@ import (
 	"github.com/syntaqx/serve/internal/middleware"
 )
 
+var getHTTPServerFunc = GetStdHTTPServer
+
+// HTTPServer defines a returnable interface type for http.Server
+type HTTPServer interface {
+	ListenAndServe() error
+	ListenAndServeTLS(certFile, keyFile string) error
+}
+
+// GetStdHTTPServer
+func GetStdHTTPServer(addr string, h http.Handler) HTTPServer {
+	return &http.Server{
+		Addr:         addr,
+		Handler:      h,
+		ReadTimeout:  15 * time.Second,
+		WriteTimeout: 15 * time.Second,
+	}
+}
+
 // Server implements the static http server command.
 func Server(log *log.Logger, opt config.Flags, dir string) error {
 	fs := serve.NewFileServer(serve.Options{
@@ -24,18 +42,14 @@ func Server(log *log.Logger, opt config.Flags, dir string) error {
 		middleware.CORS(),
 	)
 
-	server := &http.Server{
-		Addr:         net.JoinHostPort(opt.Host, strconv.Itoa(opt.Port)),
-		Handler:      fs,
-		ReadTimeout:  15 * time.Second,
-		WriteTimeout: 15 * time.Second,
-	}
+	addr := net.JoinHostPort(opt.Host, strconv.Itoa(opt.Port))
+	server := getHTTPServerFunc(addr, fs)
 
 	if opt.EnableSSL {
-		log.Printf("https server listening at %s", server.Addr)
+		log.Printf("https server listening at %s", addr)
 		return server.ListenAndServeTLS(opt.CertFile, opt.KeyFile)
 	}
 
-	log.Printf("http server listening at %s", server.Addr)
+	log.Printf("http server listening at %s", addr)
 	return server.ListenAndServe()
 }
