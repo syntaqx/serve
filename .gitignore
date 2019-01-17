@@ -16,9 +16,6 @@
 # Log files
 *.log
 
-# SSL certificates & keys
-*.pem
-
 # Output of the go coverage tool, specifically when used with LiteIDE
 coverage*
 *.out
