@@ -46,3 +46,25 @@ func TestServerErr(t *testing.T) {
 
 	time.Sleep(200 * time.Millisecond)
 }
+
+func TestServerHTTPS(t *testing.T) {
+	t.Parallel()
+
+	assert := assert.New(t)
+
+	var b bytes.Buffer
+	log := log.New(&b, "[test] ", 8888)
+
+	opt := config.Flags{
+		Port:      8888,
+		EnableSSL: true,
+		CertFile:  "../../fixtures/cert.pem",
+		KeyFile:   "../../fixtures/key.pem",
+	}
+
+	go func() {
+		assert.NoError(Server(log, opt, "."))
+	}()
+
+	time.Sleep(200 * time.Millisecond)
+}
