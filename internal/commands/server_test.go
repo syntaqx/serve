@@ -19,8 +19,8 @@ func getMockHTTPServerFunc(shouldError bool) func(addr string, h http.Handler) H
 }
 
 func TestServer(t *testing.T) {
-	t.Parallel()
 	getHTTPServerFunc = getMockHTTPServerFunc(false)
+
 	assert := assert.New(t)
 
 	var b bytes.Buffer
@@ -29,11 +29,13 @@ func TestServer(t *testing.T) {
 
 	assert.NoError(Server(log, opt, "."))
 	assert.Contains(b.String(), "http server listening at")
+
+	getHTTPServerFunc = GetStdHTTPServer
 }
 
 func TestServerErr(t *testing.T) {
-	t.Parallel()
 	getHTTPServerFunc = getMockHTTPServerFunc(true)
+
 	assert := assert.New(t)
 
 	var b bytes.Buffer
@@ -44,11 +46,13 @@ func TestServerErr(t *testing.T) {
 
 	assert.Error(Server(log, opt, "."))
 	time.Sleep(200 * time.Millisecond)
+
+	getHTTPServerFunc = GetStdHTTPServer
 }
 
 func TestServerHTTPS(t *testing.T) {
-	t.Parallel()
 	getHTTPServerFunc = getMockHTTPServerFunc(false)
+
 	assert := assert.New(t)
 
 	var b bytes.Buffer
@@ -62,4 +66,6 @@ func TestServerHTTPS(t *testing.T) {
 
 	assert.NoError(Server(log, opt, "."))
 	assert.Contains(b.String(), "https server listening at")
+
+	getHTTPServerFunc = GetStdHTTPServer
 }
