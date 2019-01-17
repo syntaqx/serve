@@ -9,9 +9,12 @@ var getwd = os.Getwd
 
 // Flags are the expose configuration flags available to the serve binary.
 type Flags struct {
-	Host string
-	Port int
-	Dir  string
+	Host      string
+	Port      int
+	EnableSSL bool
+	CertFile  string
+	KeyFile   string
+	Directory string
 }
 
 // SanitizeDir allows a directory source to be set from multiple values. If any
