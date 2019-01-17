@@ -27,11 +27,7 @@ func TestServer(t *testing.T) {
 	log := log.New(&b, "[test] ", 0)
 	opt := config.Flags{}
 
-	go func() {
-		assert.NoError(Server(log, opt, "."))
-	}()
-
-	time.Sleep(200 * time.Millisecond)
+	assert.NoError(Server(log, opt, "."))
 	assert.Contains(b.String(), "http server listening at")
 }
 
@@ -46,10 +42,7 @@ func TestServerErr(t *testing.T) {
 
 	time.Sleep(200 * time.Millisecond)
 
-	go func() {
-		assert.Error(Server(log, opt, "."))
-	}()
-
+	assert.Error(Server(log, opt, "."))
 	time.Sleep(200 * time.Millisecond)
 }
 
@@ -67,10 +60,6 @@ func TestServerHTTPS(t *testing.T) {
 		KeyFile:   "../../fixtures/key.pem",
 	}
 
-	go func() {
-		assert.NoError(Server(log, opt, "."))
-	}()
-
-	time.Sleep(200 * time.Millisecond)
+	assert.NoError(Server(log, opt, "."))
 	assert.Contains(b.String(), "https server listening at")
 }
