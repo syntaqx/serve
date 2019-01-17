@@ -31,6 +31,11 @@ func Server(log *log.Logger, opt config.Flags, dir string) error {
 		WriteTimeout: 15 * time.Second,
 	}
 
+	if opt.EnableSSL {
+		log.Printf("https server listening at %s", server.Addr)
+		return server.ListenAndServeTLS(opt.CertFile, opt.KeyFile)
+	}
+
 	log.Printf("http server listening at %s", server.Addr)
 	return server.ListenAndServe()
 }

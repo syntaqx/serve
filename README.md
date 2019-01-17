@@ -58,17 +58,24 @@ To build from source, check out the instructions on getting started with
 
 ## Usage
 
-Run a server from the current directory:
-
 ```sh
-serve
+serve [options] [path]
 ```
 
-Or, specify the directory. Paths can be both relative and absolute:
+> `[path]` defaults to `.` (relative path to the current directory)
 
-```sh
-serve /var/www # or serve -dir=/var/www
-```
+Then simply open your browser to http://localhost:8080 to view your server.
+
+### Options
+
+The following configuration options are available:
+
+* `--host` host address to bind to (defaults to `0.0.0.0`)
+* `--port` listening port (defaults to `8080`)
+* `--ssl` enable https (defaults to `false`)
+* `--cert` path to the ssl cert file (defaults to `cert.pem`)
+* `--key` path to the ssl key file (defaults to `key.pem`)
+* `--dir` directory path to serve (defaults to `.`, also configurable by `arg[0]`)
 
 ## Development
 
