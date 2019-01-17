@@ -20,7 +20,8 @@ type HTTPServer interface {
 	ListenAndServeTLS(certFile, keyFile string) error
 }
 
-// GetStdHTTPServer
+// GetStdHTTPServer returns a standard net/http.Server configured for a given
+// address and handler, and other sane defaults.
 func GetStdHTTPServer(addr string, h http.Handler) HTTPServer {
 	return &http.Server{
 		Addr:         addr,
