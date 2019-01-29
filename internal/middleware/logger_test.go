@@ -11,19 +11,43 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+var logTests = []struct {
+	in  func(w http.ResponseWriter, r *http.Request)
+	out string
+}{
+	{
+		in: func(w http.ResponseWriter, _ *http.Request) {
+			_, err := w.Write([]byte{})
+			if err != nil {
+				panic(err)
+			}
+		},
+		out: "[test] GET / 200",
+	},
+	{
+		in: func(w http.ResponseWriter, _ *http.Request) {
+			w.WriteHeader(http.StatusNotFound)
+		},
+		out: "[test] GET / 404",
+	},
+}
+
 func TestLogger(t *testing.T) {
 	t.Parallel()
-	assert := assert.New(t)
 
-	var b bytes.Buffer
-	log := log.New(&b, "[test] ", 0)
+	for _, tt := range logTests {
+		assert := assert.New(t)
 
-	req, err := http.NewRequest(http.MethodGet, "/", nil)
-	assert.NoError(err)
-	res := httptest.NewRecorder()
+		var b bytes.Buffer
+		log := log.New(&b, "[test] ", 0)
 
-	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
-	Logger(log)(testHandler).ServeHTTP(res, req)
+		req, err := http.NewRequest(http.MethodGet, "/", nil)
+		assert.NoError(err)
+		res := httptest.NewRecorder()
 
-	assert.Equal("[test] GET /", strings.TrimSpace(b.String()))
+		testHandler := http.HandlerFunc(tt.in)
+		Logger(log)(testHandler).ServeHTTP(res, req)
+
+		assert.Equal(tt.out, strings.TrimSpace(b.String()))
+	}
 }
