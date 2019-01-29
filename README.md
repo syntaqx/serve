@@ -84,8 +84,8 @@ sure you have the following installed:
 
 ### Prerequisites
 
-- [Git][git]
-- [Go 1.11][golang]+
+* [Git][git]
+* [Go 1.11][golang]+
 
 You will need to activate [Modules][modules] for your version of Go, generally
 by invoking `go` with the support `GO111MODULE=on` environment variable set.
