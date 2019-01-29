@@ -5,23 +5,6 @@ import (
 	"net/http"
 )
 
-type statusWriter struct {
-	http.ResponseWriter
-	status int
-}
-
-func (w *statusWriter) WriteHeader(status int) {
-	w.status = status
-	w.ResponseWriter.WriteHeader(status)
-}
-
-func (w *statusWriter) Write(b []byte) (int, error) {
-	if w.status == 0 {
-		w.status = 200
-	}
-	return w.ResponseWriter.Write(b)
-}
-
 // Logger is a middleware that logs each request, along with some useful data
 // about what was requested, and what the response was.
 func Logger(log *log.Logger) func(next http.Handler) http.Handler {
