@@ -22,8 +22,10 @@ func TestLogger(t *testing.T) {
 	assert.NoError(err)
 	res := httptest.NewRecorder()
 
-	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
+	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusNotFound)
+	})
 	Logger(log)(testHandler).ServeHTTP(res, req)
 
-	assert.Equal("[test] GET /", strings.TrimSpace(b.String()))
+	assert.Equal("[test] GET / 404", strings.TrimSpace(b.String()))
 }
