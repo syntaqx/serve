@@ -35,7 +35,7 @@ func TestFileServerUse(t *testing.T) {
 	}
 
 	testMiddleware2 := func(next http.Handler) http.Handler {
-		fn := func(_ http.ResponseWriter, _ *http.Request) {
+		fn := func(w http.ResponseWriter, _ *http.Request) {
 			_, _ = w.Write([]byte("end\n"))
 		}
 		return http.HandlerFunc(fn)
@@ -63,7 +63,7 @@ func TestFileServerServeHTTP(t *testing.T) {
 	res := httptest.NewRecorder()
 
 	fs := &FileServer{
-		handler: http.HandlerFunc(func(_ http.ResponseWriter, _ *http.Request) {
+		handler: http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
 			_, _ = w.Write([]byte("expected"))
 		}),
 	}
