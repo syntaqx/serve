@@ -17,7 +17,10 @@ var logTests = []struct {
 }{
 	{
 		in: func(w http.ResponseWriter, _ *http.Request) {
-			w.Write([]byte{})
+			_, err := w.Write([]byte{})
+			if err != nil {
+				panic(err)
+			}
 		},
 		out: "[test] GET / 200",
 	},
