@@ -1,6 +1,4 @@
-# serve
-
-<img src="https://raw.githubusercontent.com/syntaqx/serve/master/docs/logo.svg" width="200">
+# ![serve](docs/logo-readme.png)
 
 `serve` is a static http server anywhere you need one.
 
