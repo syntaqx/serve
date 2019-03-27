@@ -1,7 +1,3 @@
-# @TODO: I'm unaware of how to provide this value via the Docker Hub build tool.
-# Static values can be set via environment variables, but I'm not sure how to
-# retrieve this dynamically. For now though, the version can be inferred from
-# the build tags
 ARG VERSION="0.0.0-docker"
 
 ARG GO_VERSION=1.12
