@@ -1,3 +1,9 @@
+# @TODO: I'm unaware of how to provide this value via the Docker Hub build tool.
+# Static values can be set via environment variables, but I'm not sure how to
+# retrieve this dynamically. For now though, the version can be inferred from
+# the build tags
+ARG VERSION="0.0.0-docker"
+
 ARG GO_VERSION=1.12
 ARG ALPINE_VERSION=3.9
 
@@ -11,7 +17,7 @@ ADD go.mod go.sum ./
 RUN go mod download
 
 COPY . /go/src/github.com/syntaqx/serve
-RUN go build -installsuffix cgo -ldflags '-s -w' -o ./bin/serve ./cmd/serve
+RUN go build -installsuffix cgo -ldflags '-s -w -X main.version=$VERSION' -o ./bin/serve ./cmd/serve
 
 FROM alpine:${ALPINE_VERSION}
 LABEL maintainer="Chase Pierce <syntaqx@gmail.com>"
