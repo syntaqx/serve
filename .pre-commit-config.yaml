@@ -29,19 +29,19 @@ repos:
     hooks:
       - id: circleci-config-validate
 
-  # - repo: https://github.com/antonbabenko/pre-commit-terraform
-  #   rev: v1.11.0
-  #   hooks:
-  #     - id: terraform_fmt
-  #     - id: terraform_validate_no_variables
+  - repo: https://github.com/antonbabenko/pre-commit-terraform
+    rev: v1.11.0
+    hooks:
+      - id: terraform_fmt
+      - id: terraform_validate_no_variables
 
-  # - repo: https://github.com/dnephin/pre-commit-golang
-  #   rev: v0.3.3
-  #   hooks:
-  #     - id: go-fmt
+  - repo: https://github.com/dnephin/pre-commit-golang
+    rev: v0.3.3
+    hooks:
+      - id: go-fmt
 
-  # - repo: https://github.com/golangci/golangci-lint
-  #   rev: v1.15.0
-  #   hooks:
-  #     - id: golangci-lint
-  #       exclude: "vendor/"
+  - repo: https://github.com/golangci/golangci-lint
+    rev: v1.15.0
+    hooks:
+      - id: golangci-lint
+        exclude: "vendor/"
