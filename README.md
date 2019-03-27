@@ -82,12 +82,15 @@ browser.
 
 #### Using environment variables for configuration
 
+[12-factor-config]: https://12factor.net/config
+
 Currently, `serve` only supports using the `PORT` environment variable for
 setting the listening port. All other configurations are available as CLI flags.
 
 > In future releases, most configurations will be settable from both the CLI
 > flag as well as a compatible environment variable, aligning with the
-> expectations of a 12factor application. But, that work still needs to be done.
+> expectations of a [12factor app][12-factor-config]. But, that will require a
+> fair amount of work before the functionality is made available.
 
 Here's an example using `docker-compose.yml` to configure `serve` to use HTTPS:
 

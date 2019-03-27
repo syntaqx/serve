@@ -1,17 +1,21 @@
 version: '3'
 services:
 
-  example:
-    image: syntaqx/serve
+  # Note: You probably will want to remove the `build: .` lines if you copy
+  # these into your project. That is used to be able to rebuild the image
+  # directly in the project repsitory.
+
+  basic:
     build: .
+    image: syntaqx/serve
     volumes:
       - ./static:/var/www
     ports:
       - 8080
 
-  example_ssl:
-    image: syntaqx/serve
+  basic_ssl:
     build: .
+    image: syntaqx/serve
     volumes:
       - ./static:/var/www
       - ./fixtures:/etc/ssl
