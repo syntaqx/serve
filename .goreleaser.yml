@@ -1,3 +1,5 @@
+env:
+  - GO111MODULE=on
 builds:
 - main: cmd/serve/main.go
   binary: serve
@@ -15,7 +17,6 @@ builds:
       goarch: 386
   env:
     - CGO_ENABLED=0
-    - GO111MODULE=on
   ldflags:
     - -s -w -X main.version={{.Version}}
 archive:

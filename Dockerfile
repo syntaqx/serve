@@ -20,6 +20,7 @@ LABEL maintainer="Chase Pierce <syntaqx@gmail.com>"
 
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 COPY --from=builder /go/src/github.com/syntaqx/serve/bin/serve /usr/bin/
+COPY --from=builder /go/src/github.com/syntaqx/serve/static /var/www
 
 RUN addgroup -S serve \
   && adduser -D -S -s /sbin/nologin -G serve serve

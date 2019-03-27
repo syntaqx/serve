@@ -20,6 +20,8 @@
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/syntaqx/serve.svg)][docker-hub]
 [![Docker Pulls](https://img.shields.io/docker/pulls/syntaqx/serve.svg)][docker-hub]
 
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/syntaqx/serve/tree/master)
+
 ## TL;DR
 
 > It's basically `python -m SimpleHTTPServer 8080` written in Go, because who
@@ -99,14 +101,13 @@ version: '3'
 services:
   web:
     image: syntaqx/serve
-    build: .
     volumes:
       - ./static:/var/www
       - ./fixtures:/etc/ssl
     environment:
-      - PORT=8888
+      - PORT=1234
     ports:
-      - 8888
+      - 1234
     command: serve -ssl -cert=/etc/ssl/cert.pem -key=/etc/ssl/key.pem -dir=/var/www
 ```
 
@@ -159,10 +160,14 @@ sure you have the following installed:
 ### Prerequisites
 
 * [Git][git]
-* [Go 1.11][golang]+
+* [Go 1.11][golang]+ (with [`GO111MODULE`][modules] enabled)
 
-You will need to activate [Modules][modules] for your version of Go, generally
-by invoking `go` with the support `GO111MODULE=on` environment variable set.
+### Tooling
+
+* [pre-commit](https://pre-commit.com/)
+
+> __Note__: While the tooling isn't explicitly required in order to build and
+> run the project, it's for everyone's benefit that you leverage it.
 
 ### Install
 
