@@ -11,7 +11,6 @@ linters:
     - deadcode
     - depguard
     - dupl
-    - errcheck
     - gochecknoinits
     - goconst
     - gocritic
@@ -25,12 +24,14 @@ linters:
     - ineffassign
     - interfacer
     - lll
+    - megacheck
     - misspell
     - nakedret
     - prealloc
     - scopelint
     - staticcheck
     - structcheck
+    - typecheck
     - unconvert
     - unparam
     - unused
@@ -38,7 +39,7 @@ linters:
 
   # disable problem linters
   disable:
+    - errcheck         # generally reports false positives and is invasive
     - gochecknoglobals # version
-    - maligned         # no guarantee per version
-    - megacheck        # no 1.11 module support
-    - typecheck        # no 1.11 module support
+    - maligned         # no guarantee per compiler version
+

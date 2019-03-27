@@ -1,0 +1,9 @@
+version: '3'
+services:
+
+  web:
+    image: syntaqx/serve
+    volumes:
+      - .:/var/www
+    ports:
+      - 8080
