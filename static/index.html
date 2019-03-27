@@ -5,18 +5,52 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   <title>Welcome to your server!</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Mukta">
 
   <style>
+    *, ::after, ::before {
+      box-sizing: border-box;
+    }
+
     html, body {
       background-color: #fff;
       margin: 0;
       height: 100vh;
-      color: #636b6f;
+    }
+
+    body {
+      font-family: 'Mukta', sans-serif;
+      font-size: 1rem;
+      font-weight: 400;
+      line-height: 1.5;
+      color: #212529;
     }
 
     a {
       text-decoration: none;
       color: #5ba7ce;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 0;
+      margin-bottom: .5rem;
+      line-height: 1.2;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+    }
+
+    h2 {
+      font-size: 1.8rem;
+    }
+
+    h3 {
+      font-size: 1.75rem;
     }
 
     .vh-100 {
@@ -38,8 +72,9 @@
     }
 
     .title {
-      margin-bottom: 3rem;
-      font-size: 84px;
+      letter-spacing: 1.1rem;
+      font-weight: 100;
+      font-size: 4rem;
     }
 
     .links {
@@ -49,8 +84,9 @@
     }
 
     .links li {
-      margin: 0;
+      margin: 0 .5rem 0 0;
       padding: 0;
+      display: inline-block;
     }
 
   </style>
@@ -59,8 +95,10 @@
 
   <div class="flex-center position-rel vh-100">
     <div class="text-center">
-      <h1 class="title">serve</h1>
-      <p>Your web server is working correctly!</p>
+      <header>
+        <h1 class="title">serve</h1>
+        <h2>Your web server is working correctly!</h2>
+      </header>
       <p><code>/var/www/index.html</code></p>
       <ul class="links">
         <li><a href="https://github.com/syntaqx/serve/tree/master/examples">Examples</a></li>

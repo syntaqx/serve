@@ -29,4 +29,5 @@ bin/
 dist/
 
 # Local configurations
+.env*
 docker-compose.override.yml

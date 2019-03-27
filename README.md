@@ -1,6 +1,6 @@
 <div align="center">
 
-# ![img](assets/logo.png)
+# <img src="docs/logo.svg" width="200">
 
 `serve` is a static http server anywhere you need one.
 
@@ -16,7 +16,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/syntaqx/serve)](https://goreportcard.com/report/github.com/syntaqx/serve)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-[![Pre-Release](https://img.shields.io/github/release-pre/syntaqx/serve.svg)][releases]
+[![release](https://img.shields.io/github/release-pre/syntaqx/serve.svg)][releases]
 
 <br><br>
 

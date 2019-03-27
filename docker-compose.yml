@@ -1,9 +1,11 @@
 version: '3'
 services:
 
-  web:
+  example:
     image: syntaqx/serve
+    build: .
+    restart: always
     volumes:
-      - .:/var/www
+      - ./static:/var/www
     ports:
       - 8080

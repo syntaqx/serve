@@ -1,0 +1,47 @@
+fail_fast: false
+repos:
+
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v2.1.0
+    hooks:
+      - id: detect-aws-credentials
+      - id: detect-private-key
+      - id: end-of-file-fixer
+      - id: check-json
+      - id: check-yaml
+      - id: check-added-large-files
+      - id: check-byte-order-marker
+      - id: check-case-conflict
+      - id: detect-private-key
+      - id: check-merge-conflict
+      - id: no-commit-to-branch
+
+  # - repo: https://github.com/jumanjihouse/pre-commit-hooks
+  #   rev: 1.11.0
+  #   hooks:
+  #     - id: git-check
+  #     - id: markdownlint
+  #     - id: shellcheck
+  #     - id: shfmt
+
+  # - repo: https://github.com/syntaqx/git-hooks
+  #   rev: v0.0.1
+  #   hooks:
+  #     - id: circleci-config-validate
+
+  # - repo: https://github.com/antonbabenko/pre-commit-terraform
+  #   rev: v1.11.0
+  #   hooks:
+  #     - id: terraform_fmt
+  #     - id: terraform_validate_no_variables
+
+  # - repo: https://github.com/dnephin/pre-commit-golang
+  #   rev: v0.3.3
+  #   hooks:
+  #     - id: go-fmt
+
+  # - repo: https://github.com/golangci/golangci-lint
+  #   rev: v1.15.0
+  #   hooks:
+  #     - id: golangci-lint
+  #       exclude: "vendor/"

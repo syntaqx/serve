@@ -1,0 +1,7 @@
+# markdownlint - style checker and lint tool for Markdown/CommonMark files.
+# https://github.com/DavidAnson/markdownlint#rules--aliases
+
+MD013:
+  line_length: 120
+MD033: false
+MD034: false
