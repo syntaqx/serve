@@ -1,6 +1,6 @@
 <div align="center">
 
-![img](assets/logo.png)
+# ![img](assets/logo.png)
 
 `serve` is a static http server anywhere you need one.
 

@@ -25,6 +25,9 @@ USER serve
 
 VOLUME ["/var/www"]
 
+ARG PORT=8080
+ENV PORT $PORT
+
 CMD ["serve", "-dir", "/var/www"]
 
-EXPOSE 8080 80 443
+EXPOSE $PORT

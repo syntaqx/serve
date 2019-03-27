@@ -4,7 +4,6 @@ import (
 	"log"
 	"net"
 	"net/http"
-	"strconv"
 	"time"
 
 	"github.com/syntaqx/serve"
@@ -43,7 +42,7 @@ func Server(log *log.Logger, opt config.Flags, dir string) error {
 		middleware.CORS(),
 	)
 
-	addr := net.JoinHostPort(opt.Host, strconv.Itoa(opt.Port))
+	addr := net.JoinHostPort(opt.Host, opt.Port)
 	server := getHTTPServerFunc(addr, fs)
 
 	if opt.EnableSSL {
