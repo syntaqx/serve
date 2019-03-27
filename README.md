@@ -20,10 +20,13 @@
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/syntaqx/serve.svg)][docker-hub]
 [![Docker Pulls](https://img.shields.io/docker/pulls/syntaqx/serve.svg)][docker-hub]
 
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+
 ## TL;DR
 
 > It's basically `python -m SimpleHTTPServer 8080` written in Go, because who
 > can remember that many letters?
+
 
 ### Features
 
@@ -99,14 +102,13 @@ version: '3'
 services:
   web:
     image: syntaqx/serve
-    build: .
     volumes:
       - ./static:/var/www
       - ./fixtures:/etc/ssl
     environment:
-      - PORT=8888
+      - PORT=1234
     ports:
-      - 8888
+      - 1234
     command: serve -ssl -cert=/etc/ssl/cert.pem -key=/etc/ssl/key.pem -dir=/var/www
 ```
 

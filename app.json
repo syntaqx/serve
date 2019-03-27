@@ -1,0 +1,14 @@
+{
+  "name": "serve",
+  "description": "a static http server anywhere you need one",
+  "repository": "https://github.com/syntaqx/serve",
+  "logo": "https://raw.githubusercontent.com/syntaqx/serve/master/docs/logo.svg",
+  "keywords": [
+    "go",
+    "golang",
+    "static",
+    "simple-http-server",
+    "file-server"
+  ],
+  "stack": "container"
+}
