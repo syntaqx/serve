@@ -16,6 +16,7 @@ repos:
       - id: check-merge-conflict
       - id: no-commit-to-branch
 
+  # disabled: rbenv hates Windows
   # - repo: https://github.com/jumanjihouse/pre-commit-hooks
   #   rev: 1.11.0
   #   hooks:
@@ -28,12 +29,6 @@ repos:
     rev: v0.0.6
     hooks:
       - id: circleci-config-validate
-
-  - repo: https://github.com/antonbabenko/pre-commit-terraform
-    rev: v1.11.0
-    hooks:
-      - id: terraform_fmt
-      - id: terraform_validate_no_variables
 
   - repo: https://github.com/dnephin/pre-commit-golang
     rev: v0.3.3
