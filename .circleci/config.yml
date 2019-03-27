@@ -23,6 +23,7 @@ jobs:
       - checkout
       - *step_restore_cache_go_mod
       - go mod download
+      - go mod tidy && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
       - *step_save_cache_go_mod
 
   lint:
@@ -65,9 +66,16 @@ jobs:
       - *setup_remote_docker
       - run: docker build -t syntaqx/serve .
 
+  release:
+    docker:
+      - image: circleci/golang:1.10
+    steps:
+      - checkout
+      - run: curl -sL https://git.io/goreleaser | bash
+
 workflows:
   version: 2
-  build-workflow:
+  commit:
     jobs:
       - setup
       - lint:
@@ -80,3 +88,11 @@ workflows:
           requires:
             - lint
             - unit-test
+  release:
+    jobs:
+      - release:
+          filters:
+            branches:
+              ignore: /.*/
+            tags:
+              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
