@@ -2,9 +2,9 @@ ARG GO_VERSION=1.12
 ARG ALPINE_VERSION=3.9
 
 FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS builder
+WORKDIR /go/src/github.com/syntaqx/serve
 
 RUN apk add --no-cache git ca-certificates
-WORKDIR /go/src/github.com/syntaqx/serve
 ENV CGO_ENABLED=0 GO111MODULE=on
 
 ADD go.mod go.sum ./
