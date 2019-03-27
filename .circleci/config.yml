@@ -1,0 +1,82 @@
+version: 2
+aliases:
+- &setup_remote_docker
+    setup_remote_docker:
+      docker_layer_caching: true
+- &step_restore_cache_go_mod
+    restore_cache:
+      keys:
+        - go-mod-v0-{{ checksum "go.sum" }}
+- &step_save_cache_go_mod
+    save_cache:
+      key: go-mod-v0-{{ checksum "go.sum" }}
+      paths:
+        - "/go/pkg/mod"
+jobs:
+
+  setup:
+    docker:
+      - image: circleci/golang:1.12
+        environment:
+          GO111MODULE: "on"
+    steps:
+      - checkout
+      - *step_restore_cache_go_mod
+      - go mod download
+      - *step_save_cache_go_mod
+
+  lint:
+    docker:
+      - image: golangci/golangci-lint
+        environment:
+          GO111MODULE: "on"
+    steps:
+      - checkout
+      - *step_restore_cache_go_mod
+      - run: golangci-lint run
+
+  unit-test:
+    docker:
+      - image: circleci/golang:1.12
+    environment:
+      TEST_RESULTS: /tmp/test-results
+    steps:
+      - checkout
+      - *step_restore_cache_go_mod
+      - run: mkdir -p $TEST_RESULTS
+      - run:
+          name: run unit tests
+          command: |-
+            PACKAGE_NAMES=$(go list ./... | circleci tests split --split-by=timings --timings-type=classname)
+            gotestsum --junitfile ${TEST_RESULTS}/gotestsum-report.xml -- $PACKAGE_NAMES
+      - store_artifacts:
+          path: /tmp/test-results
+          destination: raw-test-output
+      - store_test_results:
+          path: /tmp/test-results
+
+  build:
+    docker:
+      - image: circleci/golang:1.12
+        environment:
+          GO111MODULE: "on"
+    steps:
+      - checkout
+      - *setup_remote_docker
+      - run: docker build -t syntaqx/serve .
+
+workflows:
+  version: 2
+  build-workflow:
+    jobs:
+      - setup
+      - lint:
+          requires:
+            - setup
+      - unit-test:
+          requires:
+            - setup
+      - build:
+          requires:
+            - lint
+            - unit-test
