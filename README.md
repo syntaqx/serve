@@ -187,15 +187,15 @@ Besides running `serve` using the provided binary, you can also embed a
 package main
 
 import (
-	"log"
-	"net/http"
+    "log"
+    "net/http"
 
-	"github.com/syntaqx/serve"
+    "github.com/syntaqx/serve"
 )
 
 func main() {
-	fs := serve.NewFileServer()
-	log.Fatal(http.ListenAndServe(":8080", fs))
+    fs := serve.NewFileServer()
+    log.Fatal(http.ListenAndServe(":8080", fs))
 }
 ```
 
