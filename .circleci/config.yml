@@ -22,8 +22,8 @@ jobs:
     steps:
       - checkout
       - *step_restore_cache_go_mod
-      - go mod download
-      - go mod tidy && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
+      - run: go mod download
+      - run: go mod tidy && git diff --exit-code; code=$?; git checkout -- .; (exit $code)
       - *step_save_cache_go_mod
 
   lint:
