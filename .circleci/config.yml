@@ -1,17 +1,23 @@
-version: 2
+version: 2.1
+orbs:
+  codecov: codecov/codecov@1.0.4
 aliases:
+
 - &setup_remote_docker
     setup_remote_docker:
       docker_layer_caching: true
+
 - &step_restore_cache_go_mod
     restore_cache:
       keys:
         - go-mod-v0-{{ checksum "go.sum" }}
+
 - &step_save_cache_go_mod
     save_cache:
       key: go-mod-v0-{{ checksum "go.sum" }}
       paths:
         - "/go/pkg/mod"
+
 jobs:
 
   setup:
@@ -39,6 +45,8 @@ jobs:
   unit-test:
     docker:
       - image: circleci/golang:1.12
+        environment:
+          GO111MODULE: "on"
     environment:
       TEST_RESULTS: /tmp/test-results
     steps:
@@ -56,6 +64,18 @@ jobs:
       - store_test_results:
           path: /tmp/test-results
 
+  coverage:
+    docker:
+      - image: circleci/golang:1.12
+        environment:
+          GO111MODULE: "on"
+    steps:
+      - checkout
+      - *step_restore_cache_go_mod
+      - run: go test -race -cover -coverprofile=coverage.txt -covermode=atomic ./...
+      - codecov/upload:
+          file: coverage.txt
+
   build:
     docker:
       - image: circleci/golang:1.12
@@ -66,12 +86,21 @@ jobs:
       - *setup_remote_docker
       - run: docker build -t syntaqx/serve .
 
-  release:
-    docker:
-      - image: circleci/golang:1.10
-    steps:
-      - checkout
-      - run: curl -sL https://git.io/goreleaser | bash
+  # @TODO:
+  # - disable travis
+  # - docker push... to where?
+  # - goreleaser
+  # - release (docker tag && docker push)
+  # - deploy.. to where?
+
+  # release:
+  #   docker:
+  #     - image: circleci/golang:1.12
+  #       environment:
+  #         GO111MODULE: "on"
+  #   steps:
+  #     - checkout
+  #     - run: curl -sL https://git.io/goreleaser | bash
 
 workflows:
   version: 2
@@ -81,6 +110,9 @@ workflows:
       - lint:
           requires:
             - setup
+      - coverage:
+          requires:
+            - setup
       - unit-test:
           requires:
             - setup
@@ -88,11 +120,12 @@ workflows:
           requires:
             - lint
             - unit-test
-  release:
-    jobs:
-      - release:
-          filters:
-            branches:
-              ignore: /.*/
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*(-.*)*/
+
+  # release:
+  #   jobs:
+  #     - release:
+  #         filters:
+  #           branches:
+  #             ignore: /.*/
+  #           tags:
+  #             only: /v[0-9]+(\.[0-9]+)*(-.*)*/
