@@ -1,14 +1,15 @@
-<div align="center">
+# serve
 
-# <img src="docs/logo.svg" width="200">
+<img src="https://raw.githubusercontent.com/syntaqx/serve/master/docs/logo.svg" width="200">
 
 `serve` is a static http server anywhere you need one.
 
-[homebrew]: https://brew.sh/
-[git]:      https://git-scm.com/
-[golang]:   https://golang.org/
-[releases]: https://github.com/syntaqx/serve/releases
-[modules]:  https://github.com/golang/go/wiki/Modules
+[homebrew]:   https://brew.sh/
+[git]:        https://git-scm.com/
+[golang]:     https://golang.org/
+[releases]:   https://github.com/syntaqx/serve/releases
+[modules]:    https://github.com/golang/go/wiki/Modules
+[docker-hub]: https://hub.docker.com/r/syntaqx/serve
 
 [![GoDoc](https://godoc.org/github.com/syntaqx/serve?status.svg)](https://godoc.org/github.com/syntaqx/serve)
 [![Build Status](https://travis-ci.org/syntaqx/serve.svg?branch=master)](https://travis-ci.org/syntaqx/serve)
@@ -16,11 +17,10 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/syntaqx/serve)](https://goreportcard.com/report/github.com/syntaqx/serve)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-[![release](https://img.shields.io/github/release-pre/syntaqx/serve.svg)][releases]
-
-<br><br>
-
-</div>
+[![GitHub Release](https://img.shields.io/github/release-pre/syntaqx/serve.svg)][releases]
+[![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/syntaqx/serve.svg)][docker-hub]
+[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/syntaqx/serve.svg)][docker-hub]
+[![Docker Pulls](https://img.shields.io/docker/pulls/syntaqx/serve.svg)][docker-hub]
 
 ## TL;DR
 
@@ -49,7 +49,9 @@ brew install syntaqx/tap/serve
 
 ### Docker
 
-To host a directory on your docker host:
+The official [syntaqx/serve][docker-hub] image is available on Docker Hub.
+
+To get started, try hosting a directory from your docker host:
 
 ```sh
 docker run -v .:/var/www:ro -d syntaqx/serve

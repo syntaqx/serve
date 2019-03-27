@@ -32,7 +32,7 @@ brew:
     owner: syntaqx
     name: homebrew-tap
   folder: Formula
-  homepage:  https://github.com/syntaqx/serve
+  homepage: https://github.com/syntaqx/serve
   description: serve is a static http server anywhere you need one.
   test: |
     system "#{bin}/serve version"
