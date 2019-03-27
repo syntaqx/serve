@@ -15,6 +15,7 @@ builds:
       goarch: 386
   env:
     - CGO_ENABLED=0
+    - GO111MODULE=on
   ldflags:
     - -s -w -X main.version={{.Version}}
 archive:
@@ -31,7 +32,7 @@ brew:
     owner: syntaqx
     name: homebrew-tap
   folder: Formula
-  homepage:  https://github.com/syntaqx/serve
+  homepage: https://github.com/syntaqx/serve
   description: serve is a static http server anywhere you need one.
   test: |
     system "#{bin}/serve version"

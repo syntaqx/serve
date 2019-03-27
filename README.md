@@ -1,14 +1,15 @@
-<div align="center">
+# serve
 
-![img](assets/logo.png)
+<img src="https://raw.githubusercontent.com/syntaqx/serve/master/docs/logo.svg" width="200">
 
 `serve` is a static http server anywhere you need one.
 
-[homebrew]: https://brew.sh/
-[git]:      https://git-scm.com/
-[golang]:   https://golang.org/
-[releases]: https://github.com/syntaqx/serve/releases
-[modules]:  https://github.com/golang/go/wiki/Modules
+[homebrew]:   https://brew.sh/
+[git]:        https://git-scm.com/
+[golang]:     https://golang.org/
+[releases]:   https://github.com/syntaqx/serve/releases
+[modules]:    https://github.com/golang/go/wiki/Modules
+[docker-hub]: https://hub.docker.com/r/syntaqx/serve
 
 [![GoDoc](https://godoc.org/github.com/syntaqx/serve?status.svg)](https://godoc.org/github.com/syntaqx/serve)
 [![Build Status](https://travis-ci.org/syntaqx/serve.svg?branch=master)](https://travis-ci.org/syntaqx/serve)
@@ -16,16 +17,22 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/syntaqx/serve)](https://goreportcard.com/report/github.com/syntaqx/serve)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-[![Pre-Release](https://img.shields.io/github/release-pre/syntaqx/serve.svg)][releases]
-
-<br><br>
-
-</div>
+[![GitHub Release](https://img.shields.io/github/release-pre/syntaqx/serve.svg)][releases]
+[![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/syntaqx/serve.svg)][docker-hub]
+[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/syntaqx/serve.svg)][docker-hub]
+[![Docker Pulls](https://img.shields.io/docker/pulls/syntaqx/serve.svg)][docker-hub]
 
 ## TL;DR
 
 > It's basically `python -m SimpleHTTPServer 8080` written in Go, because who
 > can remember that many letters?
+
+### Features
+
+* HTTPS (TLS)
+* CORS support
+* Request logging
+* `net/http` compatible
 
 ## Installation
 
@@ -39,6 +46,75 @@ following command:
 ```sh
 brew install syntaqx/tap/serve
 ```
+
+### Docker
+
+The official [syntaqx/serve][docker-hub] image is available on Docker Hub.
+
+To get started, try hosting a directory from your docker host:
+
+```sh
+docker run -v .:/var/www:ro -d syntaqx/serve
+```
+
+Alternatively, a simple `Dockerfile` can be used to generate a new image that
+includes the necessary content:
+
+```dockerfile
+FROM syntaqx/serve
+COPY . /var/www
+```
+
+Place this in the same directory as your content, then `build` and `run` the
+container:
+
+```sh
+docker build -t some-content-serve .
+docker run --name some-serve -d some-content-serve
+```
+
+#### Exposing an external port
+
+```sh
+docker run --name some-serve -d -p 8080:8080 some-content-serve
+```
+
+Then you can navigate to http://localhost:8080/ or http://host-ip:8080/ in your
+browser.
+
+#### Using environment variables for configuration
+
+[12-factor-config]: https://12factor.net/config
+
+Currently, `serve` only supports using the `PORT` environment variable for
+setting the listening port. All other configurations are available as CLI flags.
+
+> In future releases, most configurations will be settable from both the CLI
+> flag as well as a compatible environment variable, aligning with the
+> expectations of a [12factor app][12-factor-config]. But, that will require a
+> fair amount of work before the functionality is made available.
+
+Here's an example using `docker-compose.yml` to configure `serve` to use HTTPS:
+
+```yaml
+version: '3'
+services:
+  web:
+    image: syntaqx/serve
+    build: .
+    volumes:
+      - ./static:/var/www
+      - ./fixtures:/etc/ssl
+    environment:
+      - PORT=8888
+    ports:
+      - 8888
+    command: serve -ssl -cert=/etc/ssl/cert.pem -key=/etc/ssl/key.pem -dir=/var/www
+```
+
+The project repository provides an example [docker-compose](./docker-compose.yml)
+that implements a variety of common use-cases for `serve`. Feel free to use
+those to help you get started.
 
 ### Download the binary
 
@@ -116,15 +192,15 @@ Besides running `serve` using the provided binary, you can also embed a
 package main
 
 import (
-	"log"
-	"net/http"
+    "log"
+    "net/http"
 
-	"github.com/syntaqx/serve"
+    "github.com/syntaqx/serve"
 )
 
 func main() {
-	fs := serve.NewFileServer()
-	log.Fatal(http.ListenAndServe(":8080", fs))
+    fs := serve.NewFileServer()
+    log.Fatal(http.ListenAndServe(":8080", fs))
 }
 ```
 
@@ -133,3 +209,11 @@ func main() {
 [MIT]: https://opensource.org/licenses/MIT
 
 `serve` is open source software released under the [MIT license][MIT].
+
+As with all Docker images, these likely also contain other software which may be
+under other licenses (such as Bash, etc from the base distribution, along with
+any direct or indirect dependencies of the primary software being contained).
+
+As for any pre-built image usage, it is the image user's responsibility to
+ensure that any use of this image complies with any relevant licenses for all
+software contained within.

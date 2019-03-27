@@ -27,3 +27,7 @@ _vendor-*/
 # Build artifacts
 bin/
 dist/
+
+# Local configurations
+.env*
+docker-compose.override.yml
