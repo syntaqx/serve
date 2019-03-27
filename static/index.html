@@ -13,7 +13,7 @@
     }
 
     html, body {
-      background-color: #fff;
+      background-color: #eee;
       margin: 0;
       height: 100vh;
     }
@@ -23,7 +23,7 @@
       font-size: 1rem;
       font-weight: 400;
       line-height: 1.5;
-      color: #212529;
+      color: #656f79;
     }
 
     a {
@@ -57,6 +57,10 @@
       height: 100vh;
     }
 
+    .mb-2 {
+      margin-bottom: 2rem;
+    }
+
     .flex-center {
       align-items: center;
       justify-content: center;
@@ -72,9 +76,11 @@
     }
 
     .title {
-      letter-spacing: 1.1rem;
+      margin-top: 2rem;
+      letter-spacing: -.2rem;
       font-weight: 100;
       font-size: 4rem;
+      color: #363a3f;
     }
 
     .links {
@@ -95,14 +101,16 @@
 
   <div class="flex-center position-rel vh-100">
     <div class="text-center">
-      <header>
+      <header class="mb-2">
+        <img src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHhtbG5zOnhsaW5rPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5L3hsaW5rIiB2aWV3Qm94PSIwIDAgMTYuMSA4LjgiPjxkZWZzPjxzdHlsZT4uY2xzLTF7ZmlsbDp1cmwoI2xpbmVhci1ncmFkaWVudCk7fTwvc3R5bGU+PGxpbmVhckdyYWRpZW50IGlkPSJsaW5lYXItZ3JhZGllbnQiIHkxPSI4LjgiIHgyPSIxNCIgeTI9IjguOCIgZ3JhZGllbnRUcmFuc2Zvcm09Im1hdHJpeCgxLCAwLCAwLCAtMSwgMCwgMTMuMikiIGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIj48c3RvcCBvZmZzZXQ9IjAiIHN0b3AtY29sb3I9IiMwMDAwOTIiIC8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjZmYwMGYzIiAvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjx0aXRsZT5Bc3NldCAyPC90aXRsZT48ZyBpZD0iTGF5ZXJfMiIgZGF0YS1uYW1lPSJMYXllciAyIj48ZyBpZD0iTGF5ZXJfMS0yIiBkYXRhLW5hbWU9IkxheWVyIDEiPjxwYXRoIGNsYXNzPSJjbHMtMSIgZD0iTTgsMEExLjU0LDEuNTQsMCwwLDAsNi41LDEuNWExLjM1LDEuMzUsMCwwLDAsMCwuMTgsNi41LDYuNSwwLDAsMC01LDYuMTJILjZhLjU2LjU2LDAsMCwwLS42LjUuNTYuNTYsMCwwLDAsLjYuNUgxNS40Yy4zLDAsLjctLjIuNy0uNWEuNTYuNTYsMCwwLDAtLjYtLjVoLTFhNi41LDYuNSwwLDAsMC01LTYuMTIsMSwxLDAsMCwwLDAtLjE4QTEuNTQsMS41NCwwLDAsMCw4LDBaTTgsMWEuNDcuNDcsMCwwLDEsLjUuNXYwYTQuMTgsNC4xOCwwLDAsMC0xLDB2MEEuNDcuNDcsMCwwLDEsOCwxWk04LDIuNWE1LjUxLDUuNTEsMCwwLDEsNS40OSw1LjNoLTExQTUuNTEsNS41MSwwLDAsMSw4LDIuNVptLS44OS43OGEuMzkuMzksMCwwLDAtLjIxLDBBNC44OCw0Ljg4LDAsMCwwLDMuMyw2LjlhLjU1LjU1LDAsMCwwLC40LjZoLjFhLjQzLjQzLDAsMCwwLC40LS40LDQuMTksNC4xOSwwLDAsMSwzLTIuOS40OS40OSwwLDAsMCwuMy0uNkEuNTMuNTMsMCwwLDAsNy4xMSwzLjI4WiIgLz48L2c+PC9nPjwvc3ZnPg==" width="250">
         <h1 class="title">serve</h1>
         <h2>Your web server is working correctly!</h2>
       </header>
-      <p><code>/var/www/index.html</code></p>
+      <p>You can edit this file at <code>/var/www/index.html</code></p>
       <ul class="links">
         <li><a href="https://github.com/syntaqx/serve/tree/master/examples">Examples</a></li>
         <li><a href="https://github.com/syntaqx/serve">GitHub</a></li>
+        <li><a href="https://hub.docker.com/r/syntaqx/serve">Docker Hub</a></li>
       </ul>
     </div>
   </div>

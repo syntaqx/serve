@@ -4,8 +4,19 @@ services:
   example:
     image: syntaqx/serve
     build: .
-    restart: always
     volumes:
       - ./static:/var/www
     ports:
       - 8080
+
+  example_ssl:
+    image: syntaqx/serve
+    build: .
+    volumes:
+      - ./static:/var/www
+      - ./fixtures:/etc/ssl
+    environment:
+      - PORT=8888
+    ports:
+      - 8888
+    command: serve -ssl -cert=/etc/ssl/cert.pem -key=/etc/ssl/key.pem -dir=/var/www

@@ -27,6 +27,13 @@
 > It's basically `python -m SimpleHTTPServer 8080` written in Go, because who
 > can remember that many letters?
 
+### Features
+
+* HTTPS (TLS)
+* CORS support
+* Request logging
+* `net/http` compatible
+
 ## Installation
 
 `serve` can be installed in a handful of ways:
@@ -39,6 +46,70 @@ following command:
 ```sh
 brew install syntaqx/tap/serve
 ```
+
+### Docker
+
+To host a directory on your docker host:
+
+```sh
+docker run -v .:/var/www:ro -d syntaqx/serve
+```
+
+Alternatively, a simple `Dockerfile` can be used to generate a new image that
+includes the necessary content:
+
+```dockerfile
+FROM syntaqx/serve
+COPY . /var/www
+```
+
+Place this in the same directory as your content, then `build` and `run` the
+container:
+
+```sh
+docker build -t some-content-serve .
+docker run --name some-serve -d some-content-serve
+```
+
+#### Exposing an external port
+
+```sh
+docker run --name some-serve -d -p 8080:8080 some-content-serve
+```
+
+Then you can navigate to http://localhost:8080/ or http://host-ip:8080/ in your
+browser.
+
+#### Using environment variables for configuration
+
+Currently, `serve` only supports using the `PORT` environment variable for
+setting the listening port. All other configurations are available as CLI flags.
+
+> In future releases, most configurations will be settable from both the CLI
+> flag as well as a compatible environment variable, aligning with the
+> expectations of a 12factor application. But, that work still needs to be done.
+
+Here's an example using `docker-compose.yml` to configure `serve` to use HTTPS:
+
+```yaml
+version: '3'
+services:
+  web:
+    image: syntaqx/serve
+    build: .
+    volumes:
+      - ./static:/var/www
+      - ./fixtures:/etc/ssl
+    environment:
+      - PORT=8888
+    ports:
+      - 8888
+    command: serve -ssl -cert=/etc/ssl/cert.pem -key=/etc/ssl/key.pem -dir=/var/www
+```
+
+The project repository provides an example [docker-compose](./docker-compose.yml)
+that implements a variety of common use-cases for `serve`. Feel free to use
+those to help you get started.
 
 ### Download the binary
 
