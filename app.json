@@ -2,7 +2,7 @@
   "name": "serve",
   "description": "a static http server anywhere you need one",
   "repository": "https://github.com/syntaqx/serve",
-  "logo": "https://raw.githubusercontent.com/syntaqx/serve/master/docs/logo.svg",
+  "logo": "https://raw.githubusercontent.com/syntaqx/serve/master/docs/logo.svg?sanitize=true",
   "keywords": [
     "go",
     "golang",
