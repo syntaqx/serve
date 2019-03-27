@@ -1,9 +1,10 @@
 #!/bin/bash
 
 # Overrides the default "build" phase from Docker Hub
-# https://docs.docker.com/docker-hub/builds/advanced/#custom-build-phase-hooks
+# https://docs.docker.com/docker-hub/builds/advanced/
 
-docker build --build-arg VERSION="$DOCKER_TAG" \
+docker build \
+    --build-arg VERSION="$DOCKER_TAG" \
     -f "$DOCKERFILE_PATH" \
-    -t "$DOCKER_TAG" \
+    -t "$IMAGE_NAME" \
     .
