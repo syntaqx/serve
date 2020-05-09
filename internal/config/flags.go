@@ -15,6 +15,7 @@ type Flags struct {
 	CertFile  string
 	KeyFile   string
 	Directory string
+	UsersFile string
 }
 
 // SanitizeDir allows a directory source to be set from multiple values. If any

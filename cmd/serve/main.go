@@ -20,6 +20,7 @@ func main() {
 	flag.StringVar(&opt.CertFile, "cert", "cert.pem", "path to the ssl cert file")
 	flag.StringVar(&opt.KeyFile, "key", "key.pem", "path to the ssl key file")
 	flag.StringVar(&opt.Directory, "dir", "", "directory path to serve")
+	flag.StringVar(&opt.UsersFile, "users", "users.dat", "path to users file")
 	flag.Parse()
 
 	log := log.New(os.Stderr, "[serve] ", log.LstdFlags)
