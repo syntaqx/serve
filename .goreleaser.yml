@@ -19,24 +19,26 @@ builds:
     - CGO_ENABLED=0
   ldflags:
     - -s -w -X main.version={{.Version}}
-archive:
-  format: tar.gz
-  format_overrides:
-    - goos: windows
-      format: zip
-  replacements:
-    darwin: macos
-    386: i386
-    amd64: x86_64
-brew:
-  github:
-    owner: syntaqx
-    name: homebrew-tap
-  folder: Formula
-  homepage: https://github.com/syntaqx/serve
-  description: serve is a static http server anywhere you need one.
-  test: |
-    system "#{bin}/serve version"
+archives:
+  - id: tarball
+    format: tar.gz
+    format_overrides:
+      - goos: windows
+        format: zip
+    replacements:
+      darwin: macos
+      386: i386
+      amd64: x86_64
+brews:
+  -
+    github:
+      owner: syntaqx
+      name: homebrew-tap
+    folder: Formula
+    homepage: https://github.com/syntaqx/serve
+    description: serve is a static http server anywhere you need one.
+    test: |
+      system "#{bin}/serve version"
 changelog:
   sort: asc
   filters:
