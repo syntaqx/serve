@@ -161,7 +161,7 @@ sure you have the following installed:
 ### Prerequisites
 
 * [Git][git]
-* [Go 1.11][golang]+ (with [`GO111MODULE`][modules] enabled)
+* [Go 1.13][golang]
 
 ### Tooling
 
