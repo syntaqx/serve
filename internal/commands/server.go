@@ -1,9 +1,13 @@
 package commands
 
 import (
+	"bufio"
+	"io"
 	"log"
 	"net"
 	"net/http"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/syntaqx/serve"
@@ -30,16 +34,48 @@ func GetStdHTTPServer(addr string, h http.Handler) HTTPServer {
 	}
 }
 
+func GetAuthUsers(r io.Reader) map[string]string {
+	users := make(map[string]string)
+
+	if r != nil {
+		scanner := bufio.NewScanner(r)
+		for scanner.Scan() {
+			if line := strings.Split(scanner.Text(), ":"); len(line) == 2 { // use only if correct format
+				users[line[0]] = line[1]
+			}
+		}
+
+		if err := scanner.Err(); err != nil {
+			log.Fatalf("error occured during reading users file")
+		}
+	}
+
+	return users
+}
+
 // Server implements the static http server command.
 func Server(log *log.Logger, opt config.Flags, dir string) error {
 	fs := serve.NewFileServer(serve.Options{
 		Directory: dir,
 	})
 
+	// Authorization
+	var f io.Reader
+	if _, err := os.Stat(opt.UsersFile); !os.IsNotExist(err) {
+		// Config file exists, load data
+		f, err = os.Open(opt.UsersFile)
+		if err != nil {
+			log.Fatalf("unable to open users file %s", opt.UsersFile)
+		}
+	} else {
+		log.Printf("%s does not exist, no authentication required", opt.UsersFile)
+	}
+
 	fs.Use(
 		middleware.Logger(log),
 		middleware.Recover(),
 		middleware.CORS(),
+		middleware.Auth(GetAuthUsers(f)),
 	)
 
 	addr := net.JoinHostPort(opt.Host, opt.Port)

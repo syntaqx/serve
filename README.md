@@ -151,6 +151,7 @@ The following configuration options are available:
 * `--cert` path to the ssl cert file (defaults to `cert.pem`)
 * `--key` path to the ssl key file (defaults to `key.pem`)
 * `--dir` directory path to serve (defaults to `.`, also configurable by `arg[0]`)
+* `--users` path to users file (defaults to `users.dat`); file should contain lines of username:password in plain text
 
 ## Development
 

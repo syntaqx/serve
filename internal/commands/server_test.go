@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"log"
 	"net/http"
+	"strings"
 	"testing"
 	"time"
 
@@ -73,4 +74,35 @@ func TestServerHTTPS(t *testing.T) {
 	assert.Contains(b.String(), "https server listening at")
 
 	getHTTPServerFunc = GetStdHTTPServer
+}
+
+func TestGetAuthUsers(t *testing.T) {
+	tests := []struct {
+		input  string
+		output map[string]string
+	}{
+		{ // Single user
+			"user1:pass1", map[string]string{
+				"user1": "pass1",
+			},
+		},
+		{ // Multiple users
+			"user1:pass1\nuser2:pass2", map[string]string{
+				"user1": "pass1",
+				"user2": "pass2",
+			},
+		},
+		{ // Empty file
+			"", map[string]string{},
+		},
+		{ // Incorrect structure
+			"user1:pass1:field1", map[string]string{},
+		},
+	}
+
+	for _, test := range tests {
+		mockFile := strings.NewReader(test.input)
+		assert.Equal(t, GetAuthUsers(mockFile), test.output)
+	}
+
 }
