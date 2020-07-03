@@ -46,7 +46,7 @@ func GetAuthUsers(r io.Reader) map[string]string {
 		}
 
 		if err := scanner.Err(); err != nil {
-			log.Fatalf("error occured during reading users file")
+			log.Fatalf("error occurred during reading users file")
 		}
 	}
 
