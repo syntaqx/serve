@@ -9,13 +9,6 @@ coverage:
   precision: 2
 
   status:
-    project: yes
-    patch: yes
-    changes: no
-
-comment: off
-
-ignore:
-  - "vendor/*"
-  - "third_party/*"
-  - "*.pb.go"
+    project: off
+    patch: off
+    changes: off
