@@ -67,8 +67,8 @@ func Server(log *log.Logger, opt config.Flags, dir string) error {
 		if err != nil {
 			log.Fatalf("unable to open users file %s", opt.UsersFile)
 		}
-	} else {
-		log.Printf("%s does not exist, no authentication required", opt.UsersFile)
+	} else if opt.Debug {
+		log.Printf("%s does not exist, authentication skipped", opt.UsersFile)
 	}
 
 	fs.Use(

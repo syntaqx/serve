@@ -1,26 +1,25 @@
 ARG VERSION="0.0.0-docker"
 
-ARG GO_VERSION=1.12
-ARG ALPINE_VERSION=3.9
+ARG GO_VERSION=1.13
 
-FROM golang:${GO_VERSION}-alpine${ALPINE_VERSION} AS builder
+FROM golang:${GO_VERSION}-alpine AS builder
 WORKDIR /go/src/github.com/syntaqx/serve
 
 RUN apk add --no-cache git ca-certificates
 ENV CGO_ENABLED=0 GO111MODULE=on
 
-ADD go.mod go.sum ./
+COPY go.* ./
 RUN go mod download
 
 COPY . /go/src/github.com/syntaqx/serve
-RUN go build -installsuffix cgo -ldflags '-s -w -X main.version=$VERSION' -o ./bin/serve ./cmd/serve
+RUN go install -ldflags "-X main.version=$VERSION" ./cmd/...
 
-FROM alpine:${ALPINE_VERSION}
+FROM alpine:3
 LABEL maintainer="Chase Pierce <syntaqx@gmail.com>"
 
-COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
-COPY --from=builder /go/src/github.com/syntaqx/serve/bin/serve /usr/bin/
+COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
 COPY --from=builder /go/src/github.com/syntaqx/serve/static /var/www
+COPY --from=builder /go/bin/serve /usr/bin/
 
 RUN addgroup -S serve \
   && adduser -D -S -s /sbin/nologin -G serve serve
@@ -28,5 +27,5 @@ USER serve
 
 VOLUME ["/var/www"]
 
-CMD ["serve", "-dir", "/var/www"]
 EXPOSE 8080
+CMD ["serve", "-dir", "/var/www"]

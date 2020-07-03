@@ -9,6 +9,7 @@ var getwd = os.Getwd
 
 // Flags are the expose configuration flags available to the serve binary.
 type Flags struct {
+	Debug     bool
 	Host      string
 	Port      string
 	EnableSSL bool

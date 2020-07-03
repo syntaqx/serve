@@ -14,6 +14,7 @@ var version = "0.0.0-develop"
 
 func main() {
 	var opt config.Flags
+	flag.BoolVar(&opt.Debug, "debug", false, "enable debug output")
 	flag.StringVar(&opt.Host, "host", "", "host address to bind to")
 	flag.StringVar(&opt.Port, "port", "8080", "listening port")
 	flag.BoolVar(&opt.EnableSSL, "ssl", false, "enable https")
