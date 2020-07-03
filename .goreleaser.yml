@@ -1,3 +1,9 @@
+env:
+  - GO111MODULE=on
+  - GOPROXY=https://proxy.golang.org
+before:
+  hooks:
+    - go mod download
 builds:
 - main: cmd/serve/main.go
   binary: serve
@@ -20,13 +26,14 @@ builds:
 archives:
   - id: tarball
     format: tar.gz
-    format_overrides:
-      - goos: windows
-        format: zip
     replacements:
       darwin: macos
       386: i386
       amd64: x86_64
+    format_overrides:
+    - goos: windows
+      format: zip
+
 brews:
   - github:
       owner: syntaqx
@@ -36,11 +43,12 @@ brews:
     description: serve is a static http server anywhere you need one.
     test: |
       system "#{bin}/serve version"
+
 changelog:
   sort: asc
   filters:
     exclude:
-      - '^docs:'
-      - '^test:'
-      - Merge pull request
-      - Merge branch
+    - '^docs:'
+    - '^test:'
+    - Merge pull request
+    - Merge branch
