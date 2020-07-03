@@ -1,6 +1,6 @@
 VERSION=`git --no-pager describe --tags --always`
 
-LDFLAGS+=-s -w
+LDFLAGS+=
 LDFLAGS+=-X main.version=${VERSION}
 
 build:
