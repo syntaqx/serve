@@ -1,4 +1,4 @@
-# <img src="https://raw.githubusercontent.com/syntaqx/serve/master/docs/logo.svg?sanitize=true" width="250">
+# <img src="https://raw.githubusercontent.com/syntaqx/serve/main/docs/logo.svg?sanitize=true" width="250">
 
 `serve` is a static http server anywhere you need one.
 
@@ -10,8 +10,8 @@
 [docker-hub]: https://hub.docker.com/r/syntaqx/serve
 
 [![GoDoc](https://godoc.org/github.com/syntaqx/serve?status.svg)](https://godoc.org/github.com/syntaqx/serve)
-[![Build Status](https://travis-ci.org/syntaqx/serve.svg?branch=master)](https://travis-ci.org/syntaqx/serve)
-[![codecov](https://codecov.io/gh/syntaqx/serve/branch/master/graph/badge.svg)](https://codecov.io/gh/syntaqx/serve)
+[![Build Status](https://travis-ci.org/syntaqx/serve.svg?branch=main)](https://travis-ci.org/syntaqx/serve)
+[![codecov](https://codecov.io/gh/syntaqx/serve/branch/main/graph/badge.svg)](https://codecov.io/gh/syntaqx/serve)
 [![Go Report Card](https://goreportcard.com/badge/github.com/syntaqx/serve)](https://goreportcard.com/report/github.com/syntaqx/serve)
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
@@ -20,7 +20,7 @@
 [![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/syntaqx/serve.svg)][docker-hub]
 [![Docker Pulls](https://img.shields.io/docker/pulls/syntaqx/serve.svg)][docker-hub]
 
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/syntaqx/serve/tree/master)
+[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/syntaqx/serve/tree/main)
 
 ## TL;DR
 

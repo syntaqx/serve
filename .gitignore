@@ -1,6 +1,3 @@
-# gitignore - Specifies intentionally untracked files and folders to ignore.
-# https://git-scm.com/docs/gitignore
-
 # Binaries for programs and plugins
 *.exe
 *.dll
