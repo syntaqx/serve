@@ -1,9 +1,7 @@
-ARG VERSION="0.0.0-docker"
-
-ARG GO_VERSION=1.13
-
-FROM golang:${GO_VERSION}-alpine AS builder
+FROM golang:1.16-alpine AS builder
 WORKDIR /go/src/github.com/syntaqx/serve
+
+ARG VERSION="0.0.0-docker"
 
 RUN apk add --no-cache git ca-certificates
 ENV CGO_ENABLED=0 GO111MODULE=on

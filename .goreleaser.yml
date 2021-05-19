@@ -1,28 +1,54 @@
-env:
-  - GO111MODULE=on
-  - GOPROXY=https://proxy.golang.org
+project_name: serve
+
 before:
   hooks:
-    - go mod download
+  - go mod download
+  - go generate ./...
+
 builds:
-- main: cmd/serve/main.go
+- # Builds linux, macos and windows executables
+  main: ./cmd/serve/main.go
+  env:
+  - GOPROXY=https://proxy.golang.org
   binary: serve
   goos:
-    - windows
-    - darwin
     - linux
+    - darwin
+    - windows
   goarch:
-    - 386
     - amd64
-    - arm
     - arm64
+    - arm
+    - 386
   ignore:
     - goos: darwin
       goarch: 386
   env:
     - CGO_ENABLED=0
   ldflags:
-    - -X main.version={{.Version}}
+    - -s -w -X main.version={{.Version}}
+
+brews:
+  - github:
+      owner: syntaqx
+      name: homebrew-tap
+    folder: Formula
+    homepage: https://github.com/syntaqx/serve
+    description: CLI to serve a static HTTP server anywhere you need one
+    test: |
+      system "#{bin}/serve", "version"
+
+dockers:
+  - goos: linux
+    goarch: amd64
+    ids: ["serve"]
+    image_templates:
+    - "syntaqx/serve:{{ .Major }}.{{ .Minor }}.{{ .Patch }}"
+    - "syntaqx/serve:{{ .Major }}.{{ .Minor }}"
+    - "syntaqx/serve:{{ .Major }}"
+    - "syntaqx/serve:latest"
+    dockerfile: Dockerfile
+
 archives:
   - id: tarball
     format: tar.gz
@@ -33,16 +59,6 @@ archives:
     format_overrides:
     - goos: windows
       format: zip
-
-brews:
-  - github:
-      owner: syntaqx
-      name: homebrew-tap
-    folder: Formula
-    homepage: https://github.com/syntaqx/serve
-    description: serve is a static http server anywhere you need one.
-    test: |
-      system "#{bin}/serve version"
 
 changelog:
   sort: asc
