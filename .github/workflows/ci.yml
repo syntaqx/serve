@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - v*
+    branches: [ main ]
   pull_request:
     branches: [ main ]
   workflow_dispatch:
@@ -31,7 +32,7 @@ jobs:
         go mod download
     -
       run: |
-        go test -v -race -coverprofile=coverage.out -covermode=count ./...
+        go test -v -race -coverprofile=coverage.out -covermode=atomic ./...
     -
       uses: codecov/codecov-action@v1
       with:

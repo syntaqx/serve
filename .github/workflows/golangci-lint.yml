@@ -5,6 +5,8 @@ on:
       - v*
     branches: [ main ]
   pull_request:
+    branches: [ main ]
+
 jobs:
   golangci:
     name: lint
