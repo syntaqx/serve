@@ -34,7 +34,7 @@ jobs:
       run: |
         go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
     -
-      uses: codecov/codecov-action@v2
+      uses: codecov/codecov-action@v3
       with:
         # token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
         files: ./coverage.txt
