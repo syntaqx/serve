@@ -27,10 +27,11 @@ type HTTPServer interface {
 // address and handler, and other sane defaults.
 func GetStdHTTPServer(addr string, h http.Handler) HTTPServer {
 	return &http.Server{
-		Addr:         addr,
-		Handler:      h,
-		ReadTimeout:  15 * time.Second,
-		WriteTimeout: 15 * time.Second,
+		Addr:              addr,
+		Handler:           h,
+		ReadTimeout:       15 * time.Second,
+		WriteTimeout:      15 * time.Second,
+		ReadHeaderTimeout: 60 * time.Second,
 	}
 }
 
