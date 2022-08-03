@@ -1,29 +1,33 @@
-FROM golang:1.16-alpine AS builder
-WORKDIR /go/src/github.com/syntaqx/serve
+FROM golang:1.19-alpine AS builder
 
 ARG VERSION="0.0.0-docker"
 
-RUN apk add --no-cache git ca-certificates
-ENV CGO_ENABLED=0 GO111MODULE=on
+RUN apk add --update --no-cache \
+  ca-certificates tzdata openssh git mercurial && update-ca-certificates \
+  && rm -rf /var/cache/apk/*
 
-COPY go.* ./
-RUN go mod download
+WORKDIR /src
 
-COPY . /go/src/github.com/syntaqx/serve
-RUN go install -ldflags "-X main.version=$VERSION" ./cmd/...
+COPY go.mod* go.sum* ./
+RUN --mount=type=cache,target=/go/pkg/mod go mod download
 
-FROM alpine:3
-LABEL maintainer="Chase Pierce <syntaqx@gmail.com>"
+COPY . .
+RUN --mount=type=cache,target=/go/pkg/mod \
+    --mount=type=cache,target=/root/.cache/go-build \
+  CGO_ENABLED=0 go install -ldflags "-X main.version=$VERSION" ./cmd/...
 
+FROM alpine
+
+RUN adduser -S -D -H -h /app appuser
+USER appuser
+
+COPY --from=builder /usr/share/zoneinfo /usr/share/zoneinfo
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/
-COPY --from=builder /go/src/github.com/syntaqx/serve/static /var/www
-COPY --from=builder /go/bin/serve /usr/bin/
+COPY --from=builder /go/bin/* /bin/
 
-RUN addgroup -S serve \
-  && adduser -D -S -s /sbin/nologin -G serve serve
-USER serve
+ENV PORT=8080
+EXPOSE $PORT
 
 VOLUME ["/var/www"]
 
-EXPOSE 8080
-CMD ["serve", "-dir", "/var/www"]
+CMD ["serve", "--dir", "/var/www"]
