@@ -1,0 +1,35 @@
+name: Go
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: 1.19
+          cache: true
+      -
+        name: Install dependencies
+        run: go mod download
+      -
+        name: Run tests
+        run: go test -v -race -coverprofile=coverage.txt -covermode=atomic ./...
+      -
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.txt
+          flags: unittests

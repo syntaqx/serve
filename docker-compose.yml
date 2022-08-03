@@ -11,7 +11,7 @@ services:
     volumes:
       - ./static:/var/www
     ports:
-      - 8080
+      - 8080:8080
 
   basic_ssl:
     build: .
@@ -19,8 +19,6 @@ services:
     volumes:
       - ./static:/var/www
       - ./fixtures:/etc/ssl
-    environment:
-      - PORT=8888
     ports:
-      - 8888
+      - 8888:8080
     command: serve -ssl -cert=/etc/ssl/cert.pem -key=/etc/ssl/key.pem -dir=/var/www
