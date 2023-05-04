@@ -162,14 +162,7 @@ sure you have the following installed:
 ### Prerequisites
 
 * [Git][git]
-* [Go 1.13][golang]
-
-### Tooling
-
-* [pre-commit](https://pre-commit.com/)
-
-> __Note__: While the tooling isn't explicitly required in order to build and
-> run the project, it's for everyone's benefit that you leverage it.
+* [Go][golang]
 
 ### Install
 
