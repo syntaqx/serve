@@ -17,11 +17,7 @@
 [![GoDoc](https://godoc.org/github.com/syntaqx/serve?status.svg)](https://godoc.org/github.com/syntaqx/serve)
 
 [![GitHub Release](https://img.shields.io/github/release-pre/syntaqx/serve.svg)][releases]
-[![Docker Cloud Automated build](https://img.shields.io/docker/cloud/automated/syntaqx/serve.svg)][docker-hub]
-[![Docker Cloud Build Status](https://img.shields.io/docker/cloud/build/syntaqx/serve.svg)][docker-hub]
 [![Docker Pulls](https://img.shields.io/docker/pulls/syntaqx/serve.svg)][docker-hub]
-
-[![Deploy to Heroku](https://www.herokucdn.com/deploy/button.svg)](https://dashboard.heroku.com/new?template=https://github.com/syntaqx/serve/tree/main)
 
 > 🚨 The `main` branch is currently in active R&D for the next release of `serve`.
 > To use `serve`, please be sure to download a previous [release](https://github.com/syntaqx/serve/releases) as no stability guarantees

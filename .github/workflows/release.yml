@@ -1,0 +1,15 @@
+name: cd
+
+on:
+  push:
+    tags:
+      - v*
+  workflow_dispatch:
+
+jobs:
+
+  docker:
+    uses: ./.github/workflows/docker.yml
+    with:
+      push: true
+    secrets: inherit
