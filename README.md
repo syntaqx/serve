@@ -38,6 +38,7 @@
 * CORS support
 * Request logging
 * `net/http` compatible
+* Support for [BasicAuth](https://en.wikipedia.org/wiki/Basic_access_authentication) via `users.json`
 
 ## Installation
 
