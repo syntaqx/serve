@@ -13,7 +13,6 @@ tmp
 vendor
 
 .editorconfig
-app.json
 Dockerfile
 CODEOWNERS
 LICENSE
