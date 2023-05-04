@@ -13,7 +13,6 @@
 
 [![codecov](https://codecov.io/gh/syntaqx/serve/branch/main/graph/badge.svg?token=FGkU1ntp8z)](https://codecov.io/gh/syntaqx/serve)
 [![Go Report Card](https://goreportcard.com/badge/github.com/syntaqx/serve)](https://goreportcard.com/report/github.com/syntaqx/serve)
-
 [![GoDoc](https://godoc.org/github.com/syntaqx/serve?status.svg)](https://godoc.org/github.com/syntaqx/serve)
 
 [![GitHub Release](https://img.shields.io/github/release-pre/syntaqx/serve.svg)][releases]
