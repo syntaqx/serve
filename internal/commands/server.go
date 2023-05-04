@@ -35,6 +35,7 @@ func GetStdHTTPServer(addr string, h http.Handler) HTTPServer {
 	}
 }
 
+// GetAuthUsers returns a map of users from a given io.Reader
 func GetAuthUsers(r io.Reader) map[string]string {
 	users := make(map[string]string)
 
