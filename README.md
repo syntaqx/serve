@@ -20,7 +20,7 @@
 
 > 🚨 The `main` branch is currently in active R&D for the next release of `serve`.
 > To use `serve`, please be sure to download a previous [release](https://github.com/syntaqx/serve/releases) as no stability guarantees
-> are being made furter progress has been made towards a release candidate.
+> are being made further progress has been made towards a release candidate.
 
 ## TL;DR
 
