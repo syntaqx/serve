@@ -1,4 +1,3 @@
-version: '3'
 services:
 
   # Note: You probably will want to remove the `build: .` lines if you copy

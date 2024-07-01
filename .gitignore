@@ -27,4 +27,4 @@ dist/
 
 # Local configurations
 .env*
-docker-compose.override.yml
+compose.override.yml

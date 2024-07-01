@@ -95,7 +95,7 @@ setting the listening port. All other configurations are available as CLI flags.
 > expectations of a [12factor app][12-factor-config]. But, that will require a
 > fair amount of work before the functionality is made available.
 
-Here's an example using `docker-compose.yml` to configure `serve` to use HTTPS:
+Here's an example using `compose.yml` to configure `serve` to use HTTPS:
 
 ```yaml
 version: '3'
@@ -112,9 +112,9 @@ services:
     command: serve -ssl -cert=/etc/ssl/cert.pem -key=/etc/ssl/key.pem -dir=/var/www
 ```
 
-The project repository provides an example [docker-compose](./docker-compose.yml)
-that implements a variety of common use-cases for `serve`. Feel free to use
-those to help you get started.
+The project repository provides an example [compose](./compose.yml) that
+implements a variety of common use-cases for `serve`. Feel free to use those to
+help you get started.
 
 ### Download the binary
 

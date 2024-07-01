@@ -18,6 +18,6 @@ CODEOWNERS
 LICENSE
 Makefile
 .env
-docker-compose.yml
-docker-compose.override.yml
+compose.yml
+compose.override.yml
 README.md
