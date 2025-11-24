@@ -20,7 +20,7 @@ jobs:
       - uses: actions/setup-go@v6
         with:
           cache: false
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@v6
       - name: golangci-lint
         uses: golangci/golangci-lint-action@v6
         with:
