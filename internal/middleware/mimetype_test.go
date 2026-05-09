@@ -25,6 +25,7 @@ func TestSetContentType(t *testing.T) {
 	}
 
 	for _, tt := range tests {
+		tt := tt
 		t.Run(tt.path, func(t *testing.T) {
 			t.Parallel()
 			assert := assert.New(t)
