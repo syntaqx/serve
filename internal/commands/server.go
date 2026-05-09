@@ -78,6 +78,7 @@ func Server(log *log.Logger, opt config.Flags, dir string) error {
 		middleware.Recover(),
 		middleware.CORS(),
 		middleware.Auth(GetAuthUsers(f)),
+		middleware.SetContentType,
 	)
 
 	addr := net.JoinHostPort(opt.Host, opt.Port)
