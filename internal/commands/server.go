@@ -75,7 +75,7 @@ func Handler(logger *slog.Logger, cfg *config.Config, dir string) (http.Handler,
 	fs := serve.NewFileServer(
 		serve.WithDirectory(dir),
 		serve.WithHiddenFiles(cfg.ShowHidden),
-		serve.WithDirectoryListing(!cfg.DisableDirListing),
+		serve.WithDirectoryListing(cfg.DirectoryListing),
 	)
 
 	// Middleware is applied so the last entry is outermost. Health is outermost

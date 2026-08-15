@@ -24,14 +24,14 @@ func TestLoadDefaults(t *testing.T) {
 	assert.Equal(t, "info", cfg.LogLevel)
 	assert.Equal(t, "/healthz", cfg.HealthPath)
 	assert.False(t, cfg.ShowHidden)
-	assert.False(t, cfg.DisableDirListing)
+	assert.False(t, cfg.DirectoryListing)
 }
 
 func TestLoadNewToggles(t *testing.T) {
-	cfg, _, err := Load([]string{"-no-dirlisting", "-health-path", "/status"}, io.Discard)
+	cfg, _, err := Load([]string{"-dirlisting", "-health-path", "/status"}, io.Discard)
 	require.NoError(t, err)
 
-	assert.True(t, cfg.DisableDirListing)
+	assert.True(t, cfg.DirectoryListing)
 	assert.Equal(t, "/status", cfg.HealthPath)
 }
 
