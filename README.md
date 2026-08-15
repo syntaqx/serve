@@ -2,7 +2,6 @@
 
 `serve` is a static http server anywhere you need one.
 
-[homebrew]:   https://brew.sh/
 [git]:        https://git-scm.com/
 [golang]:     https://golang.org/
 [releases]:   https://github.com/syntaqx/serve/releases
@@ -37,15 +36,6 @@
 ## Installation
 
 `serve` can be installed in a handful of ways:
-
-### Homebrew on macOS
-
-If you are using [Homebrew][] on macOS, you can install `serve` with the
-following command:
-
-```sh
-brew install syntaqx/tap/serve
-```
 
 ### Docker
 
