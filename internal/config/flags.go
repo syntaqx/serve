@@ -14,21 +14,21 @@ var getwd = os.Getwd
 // be set from a CLI flag or its corresponding SERVE_* environment variable,
 // with flags taking precedence over the environment.
 type Config struct {
-	Debug             bool
-	Host              string
-	Port              string
-	EnableSSL         bool
-	CertFile          string
-	KeyFile           string
-	Directory         string
-	UsersFile         string
-	ShowHidden        bool
-	DisableDirListing bool
-	HealthPath        string
-	CORSOrigin        string
-	LogFormat         string
-	LogLevel          string
-	ShowVersion       bool
+	Debug            bool
+	Host             string
+	Port             string
+	EnableSSL        bool
+	CertFile         string
+	KeyFile          string
+	Directory        string
+	UsersFile        string
+	ShowHidden       bool
+	DirectoryListing bool
+	HealthPath       string
+	CORSOrigin       string
+	LogFormat        string
+	LogLevel         string
+	ShowVersion      bool
 }
 
 // Load parses the given arguments (typically os.Args[1:]) into a Config,
@@ -49,7 +49,7 @@ func Load(args []string, out io.Writer) (*Config, []string, error) {
 	fs.StringVar(&c.Directory, "dir", envStr("SERVE_DIR", ""), "directory to serve (defaults to the first argument or the current directory)")
 	fs.StringVar(&c.UsersFile, "users", envStr("SERVE_USERS", "users.dat"), "path to a BasicAuth users file (user:password or user:bcrypt-hash per line)")
 	fs.BoolVar(&c.ShowHidden, "all", envBool("SERVE_ALL", false), "serve dotfiles, which are hidden by default")
-	fs.BoolVar(&c.DisableDirListing, "no-dirlisting", envBool("SERVE_NO_DIRLISTING", false), "return 404 for directories without an index.html instead of listing them")
+	fs.BoolVar(&c.DirectoryListing, "dirlisting", envBool("SERVE_DIRLISTING", false), "enable an automatic listing for directories without an index.html (disabled by default)")
 	fs.StringVar(&c.HealthPath, "health-path", envStr("SERVE_HEALTH_PATH", "/healthz"), "path for the health-check endpoint (empty to disable)")
 	fs.StringVar(&c.CORSOrigin, "cors-origin", envStr("SERVE_CORS_ORIGIN", "*"), "value for the Access-Control-Allow-Origin header")
 	fs.StringVar(&c.LogFormat, "log-format", envStr("SERVE_LOG_FORMAT", "text"), "log output format: text or json")

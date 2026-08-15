@@ -2,7 +2,6 @@
 
 `serve` is a static http server anywhere you need one.
 
-[homebrew]:   https://brew.sh/
 [git]:        https://git-scm.com/
 [golang]:     https://golang.org/
 [releases]:   https://github.com/syntaqx/serve/releases
@@ -10,7 +9,7 @@
 
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
-[![codecov](https://codecov.io/gh/syntaqx/serve/branch/main/graph/badge.svg?token=FGkU1ntp8z)](https://codecov.io/gh/syntaqx/serve)
+[![codecov](https://codecov.io/gh/syntaqx/serve/graph/badge.svg?token=FGkU1ntp8z)](https://codecov.io/gh/syntaqx/serve)
 [![Go Reference](https://pkg.go.dev/badge/github.com/syntaqx/serve.svg)](https://pkg.go.dev/github.com/syntaqx/serve)
 
 [![GitHub Release](https://img.shields.io/github/release-pre/syntaqx/serve.svg)][releases]
@@ -29,7 +28,7 @@
 * Graceful shutdown on `SIGINT`/`SIGTERM`
 * Health-check endpoint at `/healthz` for load balancers and container probes
 * Dotfiles (`.env`, `.git`, ...) hidden by default
-* Optional directory-listing control via `--no-dirlisting`
+* Optional directory-listing control via `--dirlisting`
 * `net/http` compatible
 * [BasicAuth](https://en.wikipedia.org/wiki/Basic_access_authentication) via a users file (plaintext or bcrypt)
 * Configurable via flags or `SERVE_*` environment variables
@@ -37,15 +36,6 @@
 ## Installation
 
 `serve` can be installed in a handful of ways:
-
-### Homebrew on macOS
-
-If you are using [Homebrew][] on macOS, you can install `serve` with the
-following command:
-
-```sh
-brew install syntaqx/tap/serve
-```
 
 ### Docker
 
@@ -100,7 +90,7 @@ environment variables, which take precedence over the built-in defaults.
 | `--key` | `SERVE_KEY` | `key.pem` |
 | `--users` | `SERVE_USERS` | `users.dat` |
 | `--all` | `SERVE_ALL` | `false` |
-| `--no-dirlisting` | `SERVE_NO_DIRLISTING` | `false` |
+| `--dirlisting` | `SERVE_DIRLISTING` | `false` |
 | `--health-path` | `SERVE_HEALTH_PATH` | `/healthz` |
 | `--cors-origin` | `SERVE_CORS_ORIGIN` | `*` |
 | `--log-format` | `SERVE_LOG_FORMAT` | `text` |
@@ -156,7 +146,7 @@ Then simply open your browser to http://localhost:8080 to view your server.
 
 The following configuration options are available:
 
-* `--host` host address to bind to (defaults to `0.0.0.0`)
+* `--host` host address to bind to (defaults to `0.0.0.0` so the server is reachable from other machines and from inside Docker; use `127.0.0.1` to restrict to localhost)
 * `--port` listening port (defaults to `8080`, also honors `PORT`)
 * `--ssl` enable https (defaults to `false`)
 * `--cert` path to the TLS cert file (defaults to `cert.pem`)
@@ -164,7 +154,7 @@ The following configuration options are available:
 * `--dir` directory path to serve (defaults to the first argument or the current directory)
 * `--users` path to the users file (defaults to `users.dat`); each line is `username:password` or `username:bcrypt-hash`
 * `--all` serve dotfiles, which are hidden by default
-* `--no-dirlisting` return 404 for directories without an `index.html` instead of listing them
+* `--dirlisting` enable an automatic listing for directories without an `index.html` (disabled by default)
 * `--health-path` path for the health-check endpoint (defaults to `/healthz`, empty to disable)
 * `--cors-origin` value for the `Access-Control-Allow-Origin` header (defaults to `*`)
 * `--log-format` log output format, `text` or `json` (defaults to `text`)
@@ -196,7 +186,7 @@ properly appended to your `$PATH`, can now be used:
 
 ```sh
 $ serve version
-serve version v0.7.1 windows/amd64 go1.26.5
+serve version v0.8.0 windows/amd64 go1.26.5
 ```
 
 ## Using `serve` manually

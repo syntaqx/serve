@@ -58,10 +58,10 @@ func TestHandlerHealthAndDirListing(t *testing.T) {
 	require.NoError(t, os.WriteFile(usersFile, []byte("admin:secret\n"), 0o600))
 
 	cfg := &config.Config{
-		CORSOrigin:        "*",
-		UsersFile:         usersFile,
-		HealthPath:        "/healthz",
-		DisableDirListing: true,
+		CORSOrigin:       "*",
+		UsersFile:        usersFile,
+		HealthPath:       "/healthz",
+		DirectoryListing: false,
 	}
 	handler, err := Handler(discardLogger(), cfg, dir)
 	require.NoError(t, err)

@@ -2,7 +2,6 @@
 package serve
 
 import (
-	"io/fs"
 	"net/http"
 	"os"
 )
@@ -43,8 +42,8 @@ func WithHiddenFiles(show bool) Option {
 }
 
 // WithDirectoryListing controls whether directories without an index.html are
-// rendered as an automatic file listing. Listings are enabled by default; pass
-// false to return 404 for such directories instead.
+// rendered as an automatic file listing. Listings are disabled by default; pass
+// true to enable them. Directories that contain an index.html always serve it.
 func WithDirectoryListing(enabled bool) Option {
 	return func(o *options) { o.listDirs = enabled }
 }
@@ -52,10 +51,10 @@ func WithDirectoryListing(enabled bool) Option {
 // NewFileServer builds a FileServer from the provided options.
 //
 // Files are served through io/fs, which rejects path traversal at the boundary.
-// By default dotfiles are hidden from both direct access and directory
-// listings.
+// By default dotfiles are hidden and directories without an index.html are not
+// listed; use WithHiddenFiles and WithDirectoryListing to opt into either.
 func NewFileServer(opts ...Option) *FileServer {
-	o := options{directory: ".", listDirs: true}
+	o := options{directory: "."}
 	for _, fn := range opts {
 		fn(&o)
 	}
@@ -63,7 +62,7 @@ func NewFileServer(opts ...Option) *FileServer {
 		o.directory = "."
 	}
 
-	var fsys fs.FS = os.DirFS(o.directory)
+	fsys := os.DirFS(o.directory)
 	if !o.showHidden {
 		fsys = hiddenFS{fsys: fsys}
 	}

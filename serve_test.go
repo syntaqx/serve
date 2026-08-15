@@ -145,7 +145,7 @@ func TestFileServerHidesDotfiles(t *testing.T) {
 
 	t.Run("listing omits dotfiles", func(t *testing.T) {
 		t.Parallel()
-		fs := NewFileServer(WithDirectory(dir))
+		fs := NewFileServer(WithDirectory(dir), WithDirectoryListing(true))
 		srv := httptest.NewServer(fs)
 		defer srv.Close()
 
@@ -195,21 +195,9 @@ func TestFileServerDirectoryListing(t *testing.T) {
 	require.NoError(t, os.MkdirAll(filepath.Join(dir, "withindex"), 0o700))
 	require.NoError(t, os.WriteFile(filepath.Join(dir, "withindex", "index.html"), []byte("home"), 0o600))
 
-	t.Run("enabled by default", func(t *testing.T) {
+	t.Run("disabled by default", func(t *testing.T) {
 		t.Parallel()
 		srv := httptest.NewServer(NewFileServer(WithDirectory(dir)))
-		defer srv.Close()
-
-		res, err := http.Get(srv.URL + "/sub/")
-		require.NoError(t, err)
-		body := readBody(t, res)
-		assert.Equal(t, http.StatusOK, res.StatusCode)
-		assert.Contains(t, body, "file.txt")
-	})
-
-	t.Run("disabled returns 404 without index", func(t *testing.T) {
-		t.Parallel()
-		srv := httptest.NewServer(NewFileServer(WithDirectory(dir), WithDirectoryListing(false)))
 		defer srv.Close()
 
 		res, err := http.Get(srv.URL + "/sub/")
@@ -230,9 +218,21 @@ func TestFileServerDirectoryListing(t *testing.T) {
 		assert.Equal(t, http.StatusOK, fileRes.StatusCode)
 	})
 
-	t.Run("disabled still serves index.html", func(t *testing.T) {
+	t.Run("enabled lists directories", func(t *testing.T) {
 		t.Parallel()
-		srv := httptest.NewServer(NewFileServer(WithDirectory(dir), WithDirectoryListing(false)))
+		srv := httptest.NewServer(NewFileServer(WithDirectory(dir), WithDirectoryListing(true)))
+		defer srv.Close()
+
+		res, err := http.Get(srv.URL + "/sub/")
+		require.NoError(t, err)
+		body := readBody(t, res)
+		assert.Equal(t, http.StatusOK, res.StatusCode)
+		assert.Contains(t, body, "file.txt")
+	})
+
+	t.Run("index.html served even when listing disabled", func(t *testing.T) {
+		t.Parallel()
+		srv := httptest.NewServer(NewFileServer(WithDirectory(dir)))
 		defer srv.Close()
 
 		res, err := http.Get(srv.URL + "/withindex/")

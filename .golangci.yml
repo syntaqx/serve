@@ -1,0 +1,8 @@
+version: "2"
+
+linters:
+  # Restore the well-known default of not flagging ignored Close/Flush/print
+  # error returns, which are idiomatic to discard (e.g. deferred Body.Close).
+  exclusions:
+    presets:
+      - std-error-handling
