@@ -6,50 +6,64 @@ import (
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
+	"golang.org/x/crypto/bcrypt"
 )
 
-func TestAuth(t *testing.T) {
-	t.Parallel()
-	assert := assert.New(t)
+func serveAuth(t *testing.T, users map[string]string, setup func(*http.Request)) *http.Response {
+	t.Helper()
 
-	req, err := http.NewRequest(http.MethodGet, "/", nil)
-	assert.NoError(err)
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	if setup != nil {
+		setup(req)
+	}
 	res := httptest.NewRecorder()
 
-	// No users
-	testHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
-	Auth(nil)(testHandler).ServeHTTP(res, req)
-	assert.Equal("", res.Header().Get("WWW-Authenticate"))
+	next := http.HandlerFunc(func(w http.ResponseWriter, _ *http.Request) {
+		w.WriteHeader(http.StatusOK)
+	})
+	Auth(users)(next).ServeHTTP(res, req)
+	return res.Result()
+}
 
-	// Some users
-	testUsers := map[string]string{
-		"user1": "pass1",
-		"user2": "pass2",
-	}
-	Auth(testUsers)(testHandler).ServeHTTP(res, req)
-	assert.Equal("Basic realm=Authenticate", res.Header().Get("WWW-Authenticate"))
-	assert.Equal(http.StatusUnauthorized, res.Result().StatusCode)
+func TestAuthNoUsers(t *testing.T) {
+	t.Parallel()
+	res := serveAuth(t, nil, nil)
+	assert.Equal(t, http.StatusOK, res.StatusCode)
+	assert.Empty(t, res.Header.Get("WWW-Authenticate"))
+}
 
-	// Correct password
-	// Recreate new environment
-	testHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
-	req, err = http.NewRequest(http.MethodGet, "/", nil)
-	assert.NoError(err)
-	res = httptest.NewRecorder()
+func TestAuthChallenge(t *testing.T) {
+	t.Parallel()
+	res := serveAuth(t, map[string]string{"user": "pass"}, nil)
+	assert.Equal(t, http.StatusUnauthorized, res.StatusCode)
+	assert.Equal(t, `Basic realm="serve"`, res.Header.Get("WWW-Authenticate"))
+}
 
-	req.SetBasicAuth("user1", "pass1")
-	Auth(testUsers)(testHandler).ServeHTTP(res, req)
-	assert.Equal("", res.Header().Get("WWW-Authenticate"))
-	assert.Equal(http.StatusOK, res.Result().StatusCode)
+func TestAuthPlaintext(t *testing.T) {
+	t.Parallel()
+	users := map[string]string{"user": "pass"}
 
-	// Incorrect password
-	// Recreate new environment
-	testHandler = http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {})
-	req, err = http.NewRequest(http.MethodGet, "/", nil)
-	assert.NoError(err)
-	res = httptest.NewRecorder()
+	ok := serveAuth(t, users, func(r *http.Request) { r.SetBasicAuth("user", "pass") })
+	assert.Equal(t, http.StatusOK, ok.StatusCode)
 
-	req.SetBasicAuth("user1", "pass2")
-	Auth(testUsers)(testHandler).ServeHTTP(res, req)
-	assert.Equal(http.StatusUnauthorized, res.Result().StatusCode)
+	wrong := serveAuth(t, users, func(r *http.Request) { r.SetBasicAuth("user", "nope") })
+	assert.Equal(t, http.StatusUnauthorized, wrong.StatusCode)
+
+	unknown := serveAuth(t, users, func(r *http.Request) { r.SetBasicAuth("ghost", "pass") })
+	assert.Equal(t, http.StatusUnauthorized, unknown.StatusCode)
+}
+
+func TestAuthBcrypt(t *testing.T) {
+	t.Parallel()
+
+	hash, err := bcrypt.GenerateFromPassword([]byte("s3cret"), bcrypt.MinCost)
+	require.NoError(t, err)
+	users := map[string]string{"user": string(hash)}
+
+	ok := serveAuth(t, users, func(r *http.Request) { r.SetBasicAuth("user", "s3cret") })
+	assert.Equal(t, http.StatusOK, ok.StatusCode)
+
+	wrong := serveAuth(t, users, func(r *http.Request) { r.SetBasicAuth("user", "wrong") })
+	assert.Equal(t, http.StatusUnauthorized, wrong.StatusCode)
 }

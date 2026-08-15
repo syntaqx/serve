@@ -2,9 +2,15 @@
 package main
 
 import (
+	"context"
+	"errors"
 	"flag"
-	"log"
+	"io"
+	"log/slog"
 	"os"
+	"os/signal"
+	"strings"
+	"syscall"
 
 	"github.com/syntaqx/serve/internal/commands"
 	"github.com/syntaqx/serve/internal/config"
@@ -12,43 +18,93 @@ import (
 
 var version = "0.0.0-develop"
 
+// Seams for tests.
+var (
+	exit       = os.Exit
+	resolveDir = config.SanitizeDir
+)
+
 func main() {
-	var opt config.Flags
-	flag.BoolVar(&opt.Debug, "debug", false, "enable debug output")
-	flag.StringVar(&opt.Host, "host", "", "host address to bind to")
-	flag.StringVar(&opt.Port, "port", "8080", "listening port")
-	flag.BoolVar(&opt.EnableSSL, "ssl", false, "enable https")
-	flag.StringVar(&opt.CertFile, "cert", "cert.pem", "path to the ssl cert file")
-	flag.StringVar(&opt.KeyFile, "key", "key.pem", "path to the ssl key file")
-	flag.StringVar(&opt.Directory, "dir", "", "directory path to serve")
-	flag.StringVar(&opt.UsersFile, "users", "users.dat", "path to users file")
-	flag.Parse()
+	exit(realMain())
+}
 
-	log := log.New(os.Stderr, "[serve] ", log.LstdFlags)
-
-	// Allow port to be configured via the environment variable PORT.
-	// This is both better for configuration, and required for Heroku.
-	if port, ok := os.LookupEnv("PORT"); ok {
-		opt.Port = port
+// realMain runs the program and returns the process exit code.
+func realMain() int {
+	if err := run(context.Background(), os.Args[1:], os.Stdout, os.Stderr); err != nil {
+		// Help requests are not failures; usage was already printed.
+		if errors.Is(err, flag.ErrHelp) {
+			return 0
+		}
+		return 1
 	}
+	return 0
+}
 
-	cmd := flag.Arg(0)
-
-	dir, err := config.SanitizeDir(opt.Directory, cmd)
+func run(ctx context.Context, args []string, stdout, stderr io.Writer) error {
+	cfg, positional, err := config.Load(args, stderr)
 	if err != nil {
-		log.Printf("sanitize directory: %v", err)
-		os.Exit(1)
+		return err
 	}
 
-	switch cmd {
-	case "version":
-		err = commands.Version(version, os.Stderr)
+	logger := newLogger(cfg, stderr)
+
+	if cfg.ShowVersion || (len(positional) > 0 && positional[0] == "version") {
+		return commands.Version(version, stdout)
+	}
+
+	dir, err := resolveDir(cfg.Directory, positionalDir(positional))
+	if err != nil {
+		logger.Error("resolve directory", "error", err)
+		return err
+	}
+
+	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
+	defer stop()
+
+	if err := commands.Server(ctx, logger, cfg, dir); err != nil {
+		logger.Error("server stopped", "error", err)
+		return err
+	}
+
+	return nil
+}
+
+// positionalDir returns the first positional argument to use as the serve
+// directory, ignoring the reserved "version" subcommand.
+func positionalDir(args []string) string {
+	if len(args) > 0 && args[0] != "version" {
+		return args[0]
+	}
+	return ""
+}
+
+func newLogger(cfg *config.Config, w io.Writer) *slog.Logger {
+	level := parseLevel(cfg.LogLevel)
+	if cfg.Debug {
+		level = slog.LevelDebug
+	}
+
+	opts := &slog.HandlerOptions{Level: level}
+
+	var handler slog.Handler
+	if strings.EqualFold(cfg.LogFormat, "json") {
+		handler = slog.NewJSONHandler(w, opts)
+	} else {
+		handler = slog.NewTextHandler(w, opts)
+	}
+
+	return slog.New(handler)
+}
+
+func parseLevel(s string) slog.Level {
+	switch strings.ToLower(strings.TrimSpace(s)) {
+	case "debug":
+		return slog.LevelDebug
+	case "warn", "warning":
+		return slog.LevelWarn
+	case "error":
+		return slog.LevelError
 	default:
-		err = commands.Server(log, opt, dir)
-	}
-
-	if err != nil {
-		log.Printf("cmd.%s: %v", cmd, err)
-		os.Exit(1)
+		return slog.LevelInfo
 	}
 }

@@ -6,21 +6,15 @@
 [git]:        https://git-scm.com/
 [golang]:     https://golang.org/
 [releases]:   https://github.com/syntaqx/serve/releases
-[modules]:    https://github.com/golang/go/wiki/Modules
 [docker-hub]: https://hub.docker.com/r/syntaqx/serve
 
 [![Mentioned in Awesome Go](https://awesome.re/mentioned-badge.svg)](https://github.com/avelino/awesome-go)
 
 [![codecov](https://codecov.io/gh/syntaqx/serve/branch/main/graph/badge.svg?token=FGkU1ntp8z)](https://codecov.io/gh/syntaqx/serve)
-[![Go Report Card](https://goreportcard.com/badge/github.com/syntaqx/serve)](https://goreportcard.com/report/github.com/syntaqx/serve)
 [![Go Reference](https://pkg.go.dev/badge/github.com/syntaqx/serve.svg)](https://pkg.go.dev/github.com/syntaqx/serve)
 
 [![GitHub Release](https://img.shields.io/github/release-pre/syntaqx/serve.svg)][releases]
 [![Docker Pulls](https://img.shields.io/docker/pulls/syntaqx/serve.svg)][docker-hub]
-
-> 🚨 The `main` branch is currently in active R&D for the next release of `serve`.
-> To use `serve`, please be sure to download a previous [release](https://github.com/syntaqx/serve/releases) as no stability guarantees
-> are being made further progress has been made towards a release candidate.
 
 ## TL;DR
 
@@ -30,10 +24,15 @@
 ### Features
 
 * HTTPS (TLS)
-* CORS support
-* Request logging
+* Configurable CORS support
+* Structured request logging (text or JSON)
+* Graceful shutdown on `SIGINT`/`SIGTERM`
+* Health-check endpoint at `/healthz` for load balancers and container probes
+* Dotfiles (`.env`, `.git`, ...) hidden by default
+* Optional directory-listing control via `--no-dirlisting`
 * `net/http` compatible
-* Support for [BasicAuth](https://en.wikipedia.org/wiki/Basic_access_authentication) via `users.json`
+* [BasicAuth](https://en.wikipedia.org/wiki/Basic_access_authentication) via a users file (plaintext or bcrypt)
+* Configurable via flags or `SERVE_*` environment variables
 
 ## Installation
 
@@ -87,18 +86,30 @@ browser.
 
 [12-factor-config]: https://12factor.net/config
 
-Currently, `serve` only supports using the `PORT` environment variable for
-setting the listening port. All other configurations are available as CLI flags.
+Every flag can also be set from an environment variable, following the
+expectations of a [12factor app][12-factor-config]. Flags take precedence over
+environment variables, which take precedence over the built-in defaults.
 
-> In future releases, most configurations will be settable from both the CLI
-> flag as well as a compatible environment variable, aligning with the
-> expectations of a [12factor app][12-factor-config]. But, that will require a
-> fair amount of work before the functionality is made available.
+| Flag | Environment variable | Default |
+| --- | --- | --- |
+| `--host` | `SERVE_HOST` | `0.0.0.0` |
+| `--port` | `SERVE_PORT` (or `PORT`) | `8080` |
+| `--dir` | `SERVE_DIR` | current directory |
+| `--ssl` | `SERVE_SSL` | `false` |
+| `--cert` | `SERVE_CERT` | `cert.pem` |
+| `--key` | `SERVE_KEY` | `key.pem` |
+| `--users` | `SERVE_USERS` | `users.dat` |
+| `--all` | `SERVE_ALL` | `false` |
+| `--no-dirlisting` | `SERVE_NO_DIRLISTING` | `false` |
+| `--health-path` | `SERVE_HEALTH_PATH` | `/healthz` |
+| `--cors-origin` | `SERVE_CORS_ORIGIN` | `*` |
+| `--log-format` | `SERVE_LOG_FORMAT` | `text` |
+| `--log-level` | `SERVE_LOG_LEVEL` | `info` |
+| `--debug` | `SERVE_DEBUG` | `false` |
 
 Here's an example using `compose.yml` to configure `serve` to use HTTPS:
 
 ```yaml
-version: '3'
 services:
   web:
     image: syntaqx/serve
@@ -118,14 +129,13 @@ help you get started.
 
 ### Download the binary
 
-Quickly download install the latest release:
+Download the [latest release][releases] binary for your system and architecture
+and install it into your `$PATH`. If you have the Go toolchain installed, you can
+also install directly from source:
 
 ```sh
-curl -sfL https://install.goreleaser.com/github.com/syntaqx/serve.sh | sh
+go install github.com/syntaqx/serve/cmd/serve@latest
 ```
-
-Or manually download the [latest release][releases] binary for your system and
-architecture and install it into your `$PATH`.
 
 ### From source
 
@@ -147,12 +157,20 @@ Then simply open your browser to http://localhost:8080 to view your server.
 The following configuration options are available:
 
 * `--host` host address to bind to (defaults to `0.0.0.0`)
-* `--port` listening port (defaults to `8080`)
+* `--port` listening port (defaults to `8080`, also honors `PORT`)
 * `--ssl` enable https (defaults to `false`)
-* `--cert` path to the ssl cert file (defaults to `cert.pem`)
-* `--key` path to the ssl key file (defaults to `key.pem`)
-* `--dir` directory path to serve (defaults to `.`, also configurable by `arg[0]`)
-* `--users` path to users file (defaults to `users.dat`); file should contain lines of username:password in plain text
+* `--cert` path to the TLS cert file (defaults to `cert.pem`)
+* `--key` path to the TLS key file (defaults to `key.pem`)
+* `--dir` directory path to serve (defaults to the first argument or the current directory)
+* `--users` path to the users file (defaults to `users.dat`); each line is `username:password` or `username:bcrypt-hash`
+* `--all` serve dotfiles, which are hidden by default
+* `--no-dirlisting` return 404 for directories without an `index.html` instead of listing them
+* `--health-path` path for the health-check endpoint (defaults to `/healthz`, empty to disable)
+* `--cors-origin` value for the `Access-Control-Allow-Origin` header (defaults to `*`)
+* `--log-format` log output format, `text` or `json` (defaults to `text`)
+* `--log-level` log level: `debug`, `info`, `warn`, or `error` (defaults to `info`)
+* `--debug` enable debug logging
+* `--version` print version information and exit
 
 ## Development
 
@@ -178,7 +196,7 @@ properly appended to your `$PATH`, can now be used:
 
 ```sh
 $ serve version
-serve version v0.0.6-8-g5074d63 windows/amd64
+serve version v0.7.1 windows/amd64 go1.26.5
 ```
 
 ## Using `serve` manually
@@ -197,7 +215,9 @@ import (
 )
 
 func main() {
-    fs := serve.NewFileServer()
+    fs := serve.NewFileServer(
+        serve.WithDirectory("."),
+    )
     log.Fatal(http.ListenAndServe(":8080", fs))
 }
 ```

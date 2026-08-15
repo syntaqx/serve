@@ -1,0 +1,13 @@
+coverage:
+  status:
+    project:
+      default:
+        target: auto
+        threshold: 1%
+    patch:
+      default:
+        target: 90%
+
+# The runnable example blocks on ListenAndServe and is illustrative only.
+ignore:
+  - "examples"

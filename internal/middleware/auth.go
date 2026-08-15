@@ -1,38 +1,56 @@
 package middleware
 
-import "net/http"
+import (
+	"crypto/subtle"
+	"net/http"
+	"strings"
 
-// Auth sets basic HTTP authorization
+	"golang.org/x/crypto/bcrypt"
+)
+
+// Auth returns middleware that enforces HTTP Basic authentication whenever one
+// or more users are configured. When no users are provided the middleware is a
+// no-op, allowing all requests through.
+//
+// Stored secrets may be plaintext or bcrypt hashes. Plaintext secrets are
+// compared with crypto/subtle and bcrypt hashes with bcrypt.CompareHashAndPassword,
+// both of which run in constant time to avoid leaking information through
+// response timing.
 func Auth(users map[string]string) func(next http.Handler) http.Handler {
 	return func(next http.Handler) http.Handler {
-		fn := func(w http.ResponseWriter, r *http.Request) {
-			// Only require auth if we have any users
-			if len(users) > 0 {
-				authUser, authPass, ok := r.BasicAuth()
-				if !ok {
-					// No username/password received
-					w.Header().Set("WWW-Authenticate", "Basic realm=Authenticate")
-					w.WriteHeader(http.StatusUnauthorized)
-				} else {
-					if pass, ok := users[authUser]; ok {
-						// User exists
-						if pass == authPass {
-							// Authentication successful
-							next.ServeHTTP(w, r)
-						} else {
-							http.Error(w, "Incorrect login details", http.StatusUnauthorized)
-							return
-						}
-					} else {
-						http.Error(w, "Incorrect login details", http.StatusUnauthorized)
-						return
-					}
-				}
-			} else {
+		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+			if len(users) == 0 {
 				next.ServeHTTP(w, r)
+				return
 			}
-		}
 
-		return http.HandlerFunc(fn)
+			user, pass, ok := r.BasicAuth()
+			if !ok {
+				w.Header().Set("WWW-Authenticate", `Basic realm="serve"`)
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				return
+			}
+
+			stored, known := users[user]
+			if !known || !credentialsMatch(stored, pass) {
+				http.Error(w, "Unauthorized", http.StatusUnauthorized)
+				return
+			}
+
+			next.ServeHTTP(w, r)
+		})
 	}
+}
+
+func credentialsMatch(stored, provided string) bool {
+	if isBcryptHash(stored) {
+		return bcrypt.CompareHashAndPassword([]byte(stored), []byte(provided)) == nil
+	}
+	return subtle.ConstantTimeCompare([]byte(stored), []byte(provided)) == 1
+}
+
+func isBcryptHash(s string) bool {
+	return strings.HasPrefix(s, "$2a$") ||
+		strings.HasPrefix(s, "$2b$") ||
+		strings.HasPrefix(s, "$2y$")
 }
